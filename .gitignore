@@ -1,0 +1,152 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React Native
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# Android
+App/android/app/build/
+App/android/build/
+App/android/.gradle/
+App/android/local.properties
+App/android/app/google-services.json
+
+# iOS
+App/ios/build/
+App/ios/DerivedData/
+App/ios/Pods/
+App/ios/*.xcworkspace
+App/ios/*.xcuserdata
+
+# Environment variables - IMPORTANT: Keep secrets safe
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# Database backups
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build directory
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Metro
+.metro-health-check*
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Upload directories
+uploads/
+media/
+images/
+
+# API Documentation (if auto-generated)
+docs/api/
+
+# Build artifacts
+build/
+dist/
+out/
+
+# React Native specific
+App/android/app/src/main/assets/index.android.bundle
+App/android/app/src/main/assets/index.android.bundle.meta
+App/android/app/src/main/res/drawable-*
+App/android/app/src/main/res/raw/
+
+# Flipper
+App/android/app/src/debug/java/com/smartbus/ReactNativeFlipper.java
+
+# Bundle artifacts
+*.jsbundle
+
+# CocoaPods
+App/ios/Podfile.lock
+
+# Fastlane
+App/fastlane/report.xml
+App/fastlane/Preview.html
+App/fastlane/screenshots
+App/fastlane/test_output
+
+# Google Services (contains API keys)
+App/ios/GoogleService-Info.plist

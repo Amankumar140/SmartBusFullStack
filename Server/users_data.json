@@ -1,0 +1,507 @@
+{
+    "success": true,
+    "message": "Users data retrieved successfully!",
+    "total_users": 50,
+    "users": [
+        {
+            "user_id": 50,
+            "name": "Kuldeep Sethi",
+            "password_hash": "hashed_password_49",
+            "age": 59,
+            "email": "kuldeep.sethi49@gmail.com",
+            "mobile": "9984121546",
+            "region": "Phagwara",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 49,
+            "name": "Simran Sharma",
+            "password_hash": "hashed_password_48",
+            "age": 34,
+            "email": "simran.sharma48@gmail.com",
+            "mobile": "9973515061",
+            "region": "Jalandhar",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 48,
+            "name": "Simran Randhawa",
+            "password_hash": "hashed_password_47",
+            "age": 37,
+            "email": "simran.randhawa47@gmail.com",
+            "mobile": "9960465731",
+            "region": "Rupnagar",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 47,
+            "name": "Paramjit Randhawa",
+            "password_hash": "hashed_password_46",
+            "age": 67,
+            "email": "paramjit.randhawa46@gmail.com",
+            "mobile": "9873130456",
+            "region": "Jalandhar",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 46,
+            "name": "Ravinder Randhawa",
+            "password_hash": "hashed_password_45",
+            "age": 46,
+            "email": "ravinder.randhawa45@gmail.com",
+            "mobile": "9141042580",
+            "region": "Firozpur",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 45,
+            "name": "Gurpreet Bedi",
+            "password_hash": "hashed_password_44",
+            "age": 58,
+            "email": "gurpreet.bedi44@gmail.com",
+            "mobile": "9120378424",
+            "region": "Kapurthala",
+            "created_at": "2025-09-23T12:48:21.000Z"
+        },
+        {
+            "user_id": 39,
+            "name": "Manjit Malhotra",
+            "password_hash": "hashed_password_38",
+            "age": 53,
+            "email": "manjit.malhotra38@gmail.com",
+            "mobile": "9767872649",
+            "region": "Pathankot",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 38,
+            "name": "Ravinder Chopra",
+            "password_hash": "hashed_password_37",
+            "age": 50,
+            "email": "ravinder.chopra37@gmail.com",
+            "mobile": "9616505188",
+            "region": "Kharar",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 40,
+            "name": "Gurpreet Bedi",
+            "password_hash": "hashed_password_39",
+            "age": 42,
+            "email": "gurpreet.bedi39@gmail.com",
+            "mobile": "9647671330",
+            "region": "Phagwara",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 41,
+            "name": "Gurdeep Verma",
+            "password_hash": "hashed_password_40",
+            "age": 21,
+            "email": "gurdeep.verma40@gmail.com",
+            "mobile": "9466864062",
+            "region": "Amritsar",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 42,
+            "name": "Kawaljit Brar",
+            "password_hash": "hashed_password_41",
+            "age": 20,
+            "email": "kawaljit.brar41@gmail.com",
+            "mobile": "9765066378",
+            "region": "Phagwara",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 43,
+            "name": "Harjot Kaur",
+            "password_hash": "hashed_password_42",
+            "age": 69,
+            "email": "harjot.kaur42@gmail.com",
+            "mobile": "9792896566",
+            "region": "Amritsar",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 44,
+            "name": "Jasleen Malhotra",
+            "password_hash": "hashed_password_43",
+            "age": 31,
+            "email": "jasleen.malhotra43@gmail.com",
+            "mobile": "9382131947",
+            "region": "Rupnagar",
+            "created_at": "2025-09-23T12:48:20.000Z"
+        },
+        {
+            "user_id": 37,
+            "name": "Sukhdev Kaur",
+            "password_hash": "hashed_password_36",
+            "age": 49,
+            "email": "sukhdev.kaur36@gmail.com",
+            "mobile": "9133772478",
+            "region": "Zirakpur",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 36,
+            "name": "Amandeep Gill",
+            "password_hash": "hashed_password_35",
+            "age": 52,
+            "email": "amandeep.gill35@gmail.com",
+            "mobile": "9732635883",
+            "region": "Rajpura",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 35,
+            "name": "Harjot Kaur",
+            "password_hash": "hashed_password_34",
+            "age": 57,
+            "email": "harjot.kaur34@gmail.com",
+            "mobile": "9286801107",
+            "region": "Batala",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 34,
+            "name": "Kawaljit Chopra",
+            "password_hash": "hashed_password_33",
+            "age": 62,
+            "email": "kawaljit.chopra33@gmail.com",
+            "mobile": "9323053585",
+            "region": "Rampura",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 33,
+            "name": "Ravinder Dhillon",
+            "password_hash": "hashed_password_32",
+            "age": 58,
+            "email": "ravinder.dhillon32@gmail.com",
+            "mobile": "9366609687",
+            "region": "Rampura",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 32,
+            "name": "Kuldeep Dhillon",
+            "password_hash": "hashed_password_31",
+            "age": 44,
+            "email": "kuldeep.dhillon31@gmail.com",
+            "mobile": "9439369257",
+            "region": "Bathinda",
+            "created_at": "2025-09-23T12:48:19.000Z"
+        },
+        {
+            "user_id": 26,
+            "name": "Jasleen Brar",
+            "password_hash": "hashed_password_25",
+            "age": 55,
+            "email": "jasleen.brar25@gmail.com",
+            "mobile": "9817600770",
+            "region": "Abohar",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 31,
+            "name": "Kawaljit Gupta",
+            "password_hash": "hashed_password_30",
+            "age": 40,
+            "email": "kawaljit.gupta30@gmail.com",
+            "mobile": "9276903732",
+            "region": "Malerkotla",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 30,
+            "name": "Jaswinder Sharma",
+            "password_hash": "hashed_password_29",
+            "age": 69,
+            "email": "jaswinder.sharma29@gmail.com",
+            "mobile": "9400134614",
+            "region": "Ludhiana",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 29,
+            "name": "Prabhjit Gill",
+            "password_hash": "hashed_password_28",
+            "age": 32,
+            "email": "prabhjit.gill28@gmail.com",
+            "mobile": "9277416106",
+            "region": "Moga",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 28,
+            "name": "Balwinder Sharma",
+            "password_hash": "hashed_password_27",
+            "age": 45,
+            "email": "balwinder.sharma27@gmail.com",
+            "mobile": "9728412999",
+            "region": "Rajpura",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 27,
+            "name": "Balwinder Gupta",
+            "password_hash": "hashed_password_26",
+            "age": 57,
+            "email": "balwinder.gupta26@gmail.com",
+            "mobile": "9772512234",
+            "region": "Hoshiarpur",
+            "created_at": "2025-09-23T12:48:18.000Z"
+        },
+        {
+            "user_id": 25,
+            "name": "Amandeep Sethi",
+            "password_hash": "hashed_password_24",
+            "age": 38,
+            "email": "amandeep.sethi24@gmail.com",
+            "mobile": "9982808017",
+            "region": "Zirakpur",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 24,
+            "name": "Prabhjit Dhillon",
+            "password_hash": "hashed_password_23",
+            "age": 19,
+            "email": "prabhjit.dhillon23@gmail.com",
+            "mobile": "9411618244",
+            "region": "Zirakpur",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 23,
+            "name": "Satwinder Sidhu",
+            "password_hash": "hashed_password_22",
+            "age": 60,
+            "email": "satwinder.sidhu22@gmail.com",
+            "mobile": "9636114670",
+            "region": "Fatehgarh Sahib",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 22,
+            "name": "Harjot Malhotra",
+            "password_hash": "hashed_password_21",
+            "age": 26,
+            "email": "harjot.malhotra21@gmail.com",
+            "mobile": "9782055701",
+            "region": "Hoshiarpur",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 21,
+            "name": "Aman Dhillon",
+            "password_hash": "hashed_password_20",
+            "age": 31,
+            "email": "aman.dhillon20@gmail.com",
+            "mobile": "9670561535",
+            "region": "Mohali",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 20,
+            "name": "Gurpreet Bedi",
+            "password_hash": "hashed_password_19",
+            "age": 64,
+            "email": "gurpreet.bedi19@gmail.com",
+            "mobile": "9176921369",
+            "region": "Jalandhar",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 19,
+            "name": "Manjit Dhillon",
+            "password_hash": "hashed_password_18",
+            "age": 46,
+            "email": "manjit.dhillon18@gmail.com",
+            "mobile": "9169343377",
+            "region": "Phagwara",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 18,
+            "name": "Kawaljit Sethi",
+            "password_hash": "hashed_password_17",
+            "age": 61,
+            "email": "kawaljit.sethi17@gmail.com",
+            "mobile": "9209931273",
+            "region": "Patiala",
+            "created_at": "2025-09-23T12:48:17.000Z"
+        },
+        {
+            "user_id": 14,
+            "name": "Jaswinder Brar",
+            "password_hash": "hashed_password_13",
+            "age": 38,
+            "email": "jaswinder.brar13@gmail.com",
+            "mobile": "9815231757",
+            "region": "Sunam",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 12,
+            "name": "Harjinder Malhotra",
+            "password_hash": "hashed_password_11",
+            "age": 24,
+            "email": "harjinder.malhotra11@gmail.com",
+            "mobile": "9821286491",
+            "region": "Nabha",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 13,
+            "name": "Harjinder Bedi",
+            "password_hash": "hashed_password_12",
+            "age": 58,
+            "email": "harjinder.bedi12@gmail.com",
+            "mobile": "9450836186",
+            "region": "Sangrur",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 15,
+            "name": "Jaswinder Randhawa",
+            "password_hash": "hashed_password_14",
+            "age": 61,
+            "email": "jaswinder.randhawa14@gmail.com",
+            "mobile": "9637367604",
+            "region": "Kapurthala",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 16,
+            "name": "Jasleen Dhillon",
+            "password_hash": "hashed_password_15",
+            "age": 70,
+            "email": "jasleen.dhillon15@gmail.com",
+            "mobile": "9389995610",
+            "region": "Barnala",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 17,
+            "name": "Kawaljit Bedi",
+            "password_hash": "hashed_password_16",
+            "age": 48,
+            "email": "kawaljit.bedi16@gmail.com",
+            "mobile": "9628895742",
+            "region": "Rampura",
+            "created_at": "2025-09-23T12:48:16.000Z"
+        },
+        {
+            "user_id": 11,
+            "name": "Amandeep Dhillon",
+            "password_hash": "hashed_password_10",
+            "age": 48,
+            "email": "amandeep.dhillon10@gmail.com",
+            "mobile": "9725723531",
+            "region": "Rajpura",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 10,
+            "name": "Satwinder Sidhu",
+            "password_hash": "hashed_password_9",
+            "age": 31,
+            "email": "satwinder.sidhu9@gmail.com",
+            "mobile": "9569222725",
+            "region": "Moga",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 9,
+            "name": "Manpreet Malhotra",
+            "password_hash": "hashed_password_8",
+            "age": 18,
+            "email": "manpreet.malhotra8@gmail.com",
+            "mobile": "9680989288",
+            "region": "Sunam",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 8,
+            "name": "Harjinder Singh",
+            "password_hash": "hashed_password_7",
+            "age": 61,
+            "email": "harjinder.singh7@gmail.com",
+            "mobile": "9241098999",
+            "region": "Barnala",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 7,
+            "name": "Harpreet Chopra",
+            "password_hash": "hashed_password_6",
+            "age": 55,
+            "email": "harpreet.chopra6@gmail.com",
+            "mobile": "9895062212",
+            "region": "Malout",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 6,
+            "name": "Paramjit Gill",
+            "password_hash": "hashed_password_5",
+            "age": 23,
+            "email": "paramjit.gill5@gmail.com",
+            "mobile": "9743780154",
+            "region": "Sunam",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 5,
+            "name": "Sukhdev Chopra",
+            "password_hash": "hashed_password_4",
+            "age": 18,
+            "email": "sukhdev.chopra4@gmail.com",
+            "mobile": "9472323473",
+            "region": "Rajpura",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 4,
+            "name": "Harpreet Bedi",
+            "password_hash": "hashed_password_3",
+            "age": 51,
+            "email": "harpreet.bedi3@gmail.com",
+            "mobile": "9917717564",
+            "region": "Fatehgarh Sahib",
+            "created_at": "2025-09-23T12:48:15.000Z"
+        },
+        {
+            "user_id": 1,
+            "name": "Sukhdev Gupta",
+            "password_hash": "hashed_password_0",
+            "age": 31,
+            "email": "sukhdev.gupta0@gmail.com",
+            "mobile": "9497271880",
+            "region": "Fazilka",
+            "created_at": "2025-09-23T12:48:14.000Z"
+        },
+        {
+            "user_id": 3,
+            "name": "Satwinder Sharma",
+            "password_hash": "hashed_password_2",
+            "age": 29,
+            "email": "satwinder.sharma2@gmail.com",
+            "mobile": "9635430002",
+            "region": "Nabha",
+            "created_at": "2025-09-23T12:48:14.000Z"
+        },
+        {
+            "user_id": 2,
+            "name": "Kuldeep Sethi",
+            "password_hash": "hashed_password_1",
+            "age": 40,
+            "email": "kuldeep.sethi1@gmail.com",
+            "mobile": "9239722779",
+            "region": "Fatehgarh Sahib",
+            "created_at": "2025-09-23T12:48:14.000Z"
+        }
+    ]
+}

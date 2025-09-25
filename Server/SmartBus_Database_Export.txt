@@ -1,0 +1,1008 @@
+================================================================
+                SMARTBUS DATABASE COMPLETE EXPORT
+================================================================
+Export Date: 19/9/2025, 12:15:32 am
+Database: defaultdb
+Host: bus-booking-glbitm-b2c0.d.aivencloud.com
+================================================================
+
+📊 SUMMARY: 17 tables found
+Tables: bus_realtime_status, buses, busstops, chatlogs, driver_auth, driver_route_stops, driver_routes, driver_sessions, drivers, location_updates, notifications, reports, route_stops, routes, routestops, tickets, users
+
+
+============================================================
+🏷️  TABLE: BUS_REALTIME_STATUS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• session_id: int NOT NULL  
+• route_id: int NOT NULL [MUL] 
+• bus_number: varchar(50) NOT NULL  
+• current_latitude: decimal(10,8) NULL  
+• current_longitude: decimal(11,8) NULL  
+• current_stop_id: int NULL  
+• next_stop_id: int NULL  
+• estimated_arrival: time NULL  
+• passenger_count: int NULL  DEFAULT: 0
+• status: enum('on_route','at_stop','delayed','breakdown') NULL  DEFAULT: on_route
+• last_updated: timestamp NULL [MUL] DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 0
+
+
+============================================================
+
+============================================================
+🏷️  TABLE: BUSES
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• bus_id: int NOT NULL [PRI] 
+• bus_number: varchar(50) NOT NULL  
+• capacity: int NULL  
+• current_location: varchar(255) NULL  
+• route_id: int NULL [MUL] 
+• status: varchar(50) NULL  
+
+📊 RECORD COUNT: 4
+
+📄 DATA:
+--------------------------------------------------
+bus_id | bus_number | capacity | current_location | route_id | status
+---------------------------------------------------------------------
+1 | PB10AB1234 | 50 | On route near Kharar | 1 | Running
+2 | PB11XY5678 | 45 | Ludhiana Bus Stand | 3 | Idle
+3 | PB09CD4321 | 52 | On route near Phagwara | 2 | Running
+4 | PB39EF9876 | 40 | Patiala Bus Stand | 4 | Idle
+
+📝 4 records shown
+
+🚌 BUS ANALYSIS:
+• Running buses: 2
+• Idle buses: 2
+• Total capacity: 187 passengers
+
+============================================================
+
+============================================================
+🏷️  TABLE: BUSSTOPS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• stop_id: int NOT NULL [PRI] 
+• stop_name: varchar(100) NOT NULL  
+• location: varchar(255) NULL  
+• region: varchar(100) NULL  
+
+📊 RECORD COUNT: 6
+
+📄 DATA:
+--------------------------------------------------
+stop_id | stop_name | location | region
+---------------------------------------
+1 | ISBT Chandigarh | Sector 43, Chandigarh | Chandigarh
+2 | Sector 17 Bus Stand | Sector 17, Chandigarh | Chandigarh
+3 | Ludhiana Bus Stand | Gill Road, Ludhiana | Ludhiana
+4 | Jalandhar Bus Stand | Nakodar Road, Jalandhar | Jalandhar
+5 | Amritsar Bus Stand | Grand Trunk Road, Amritsar | Amritsar
+6 | Patiala Bus Stand | Bhupindra Road, Patiala | Patiala
+
+📝 6 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: CHATLOGS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• chat_id: int NOT NULL [PRI] 
+• user_id: int NULL [MUL] 
+• message_text: text NULL  
+• intent: varchar(255) NULL  
+• response_text: text NULL  
+• created_at: datetime NULL  DEFAULT: CURRENT_TIMESTAMP
+• correction_applied: varchar(255) NULL  
+
+📊 RECORD COUNT: 150
+
+📄 DATA:
+--------------------------------------------------
+chat_id | user_id | message_text | intent | response_text | created_at | correction_applied
+-------------------------------------------------------------------------------------------
+1 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | Bus PB10AB1234 → ETA 10 min, occupancy 60% | 2025-09-03 | NULL
+2 | 2 | When is the first bus to Jalandhar tomorrow? | NULL | First bus leaves ISBT Chandigarh at 06:00 AM | 2025-09-03 | NULL
+3 | 3 | How crowded is the Ludhiana bus? | NULL | Bus PB11XY5678 occupancy is medium | 2025-09-03 | NULL
+4 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | I'm sorry, I'm having trouble accessing real-ti... | 2025-09-03 | NULL
+5 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | I'm sorry, I cannot access real-time bus schedu... | 2025-09-03 | NULL
+6 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | Sorry, I don't have any information about the n... | 2025-09-03 | NULL
+7 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | Next bus to Ludhiana from ISBT Chandigarh (PB10... | 2025-09-03 | NULL
+8 | 1 | Chandigarh to Jalandhar | NULL | Sorry, I couldn't find any information about ro... | 2025-09-03 | NULL
+9 | 1 | bus from ludhiana to amritsar bus stand | NULL | Hi!  I'm sorry, but I couldn't find any bus inf... | 2025-09-03 | NULL
+10 | 1 | Chandigarh to Jalandhar | NULL | Sorry, I couldn't find any information on trave... | 2025-09-03 | NULL
+11 | 1 | Next bus from ISBT Chandigarh to Ludhiana? | NULL | Sorry, I have no information about the next bus... | 2025-09-03 | NULL
+12 | 1 |  Next bus from ISBT Chandigarh to Ludhiana? | NULL | Next bus to Ludhiana from ISBT Chandigarh (PB10... | 2025-09-03 | NULL
+13 | 1 | how much time it will need to come , to the sta... | NULL | I'm sorry, I don't have any information about a... | 2025-09-03 | NULL
+14 | 1 | train from lidhiana | NULL | Sorry, I couldn't find any train information fo... | 2025-09-04 | NULL
+15 | 1 | Show all buses from Chandigarh | NULL | Here's a possible SMS/WhatsApp reply:
+
+Buses fr... | 2025-09-04 | NULL
+16 | 1 | busses from chandigardh | NULL | Sorry, I couldn't find any bus information from... | 2025-09-04 | NULL
+17 | 1 | busses from vhandigarh | NULL | Hi! I'm sorry, but I couldn't find any bus info... | 2025-09-04 | NULL
+18 | 1 | busses from chandigarh | NULL | Here's a possible SMS/WhatsApp reply:
+
+Buses fr... | 2025-09-04 | NULL
+19 | 1 | Show me buses from Chandigarh | NULL | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-04 | NULL
+20 | 1 | And from there to Ludhiana? | NULL | From Chandigarh to Ludhiana:
+
+PB10AB1234 is run... | 2025-09-04 | NULL
+21 | 1 | Show buses from Chandigarh | NULL | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-04 | NULL
+22 | 1 | I want to know about the buses from chandigarh | NULL | Hi! Here's bus info from Chandigarh:
+
+* PB10AB1... | 2025-09-04 | NULL
+23 | 1 | I want to know about the busses from chandigarh | NULL | Here's the bus info from Chandigarh:
+
+* PB10AB1... | 2025-09-04 | NULL
+24 | 1 | Hey i wanna know what are the buses around me c... | NULL | Hey!  There are currently no buses showing as a... | 2025-09-04 | NULL
+25 | 1 | Hi | NULL | Hey!  Looks like there's a problem with your SQ... | 2025-09-04 | NULL
+26 | 1 | Any buses from Amritsar | NULL | Yes! Bus PB11XY5678 (Ludhiana to Amritsar) is c... | 2025-09-04 | NULL
+27 | 1 | Show me the data of all the busses | NULL | Bus Data:
+
+Bus 1: PB10AB1234 (50 seats), Near K... | 2025-09-04 | NULL
+28 | 1 | How many sheets are there in the bus, ludhiana ... | NULL | The bus has a capacity of 45 seats. | 2025-09-04 | NULL
+29 | 1 | busses from chandigar? | NULL | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-07 | NULL
+30 | 1 | hi | NULL | Sat Sri Akal!  How can I help you today? | 2025-09-07 | NULL
+31 | 1 | busses from chandigar? | NULL | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-07 | NULL
+32 | 2 | busses from chandigar? | NULL | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-07 | NULL
+33 | 1 | hi there | NULL | Sat Sri Akal!  How can I help you today? | 2025-09-07 | NULL
+34 | 1 | Who are you? | NULL | I am the Punjab Bus Assistant, here to help you... | 2025-09-07 | NULL
+35 | 1 | hey | NULL | Hey there!  Welcome aboard! How can I help you ... | 2025-09-08 | NULL
+36 | 1 | i want to plan ja journey for me | NULL | 🤖 I noticed a typo. Showing results for *I wan... | 2025-09-08 | I want to plan a journey for me
+37 | 1 | tell me all routes that you know of | NULL | Routes I know:
+
+* Chandigarh to Ludhiana
+* Chan... | 2025-09-08 | NULL
+38 | 1 | Hi | NULL | Sat Sri Akal!  How can I help you today? | 2025-09-08 | NULL
+39 | 1 | hi | NULL | Sat Sri Akal!  How can I help you today? | 2025-09-08 | NULL
+40 | 1 | hows its going | NULL | ❌ Couldn’t find results for *hows its going*. P... | 2025-09-08 | NULL
+41 | 1 | hola | NULL | ❌ Couldn’t find results for *hola*. Try checkin... | 2025-09-08 | Corrected:  hola (No correction suggested as "h...
+42 | 1 | cancelation policy | NULL | 🚌 Punjab Bus Cancellation Policy:
+✅ Tickets ca... | 2025-09-08 | NULL
+43 | 1 | i want to travel from chandigar | NULL | Hi!  From Chandigarh, you can travel to:
+
+* Lud... | 2025-09-08 | NULL
+44 | 1 | jalandhar | NULL | Found Jalandhar Bus Stand. | 2025-09-08 | NULL
+45 | 1 | busses from chandigar to jalandhar | NULL | ❌ Couldn’t find results for *busses from chandi... | 2025-09-08 | Corrected: buses from Chandigarh to Jalandhar
+46 | 1 | I want to travel from Chandigarh to Jalandhar | NULL | Oops!  I'm having trouble finding that route ri... | 2025-09-08 | NULL
+47 | 1 | How are you? | NULL | Oops!  My database seems to be having a bit of ... | 2025-09-08 | NULL
+48 | 1 | Show me buses from Chandigarh to Jalandhar | NULL | Oops!  I'm having trouble finding bus informati... | 2025-09-08 | NULL
+49 | 1 | How are you doing today? | NULL | Oops!  Something went wrong with my database.  ... | 2025-09-08 | NULL
+50 | 1 | Hi? | NULL | Hey!  I need you to ask me a specific SQL query... | 2025-09-08 | NULL
+51 | 1 | Show me buses from Chandigarh to Jalandhar | other | I'm not sure how to respond. | 2025-09-08 | NULL
+52 | 1 | How are you doing today? | other | I'm not sure how to respond. | 2025-09-08 | NULL
+53 | 1 | Show me buses from Chandigarh to Jalandhar | other | I'm not sure how to respond. | 2025-09-08 | NULL
+54 | 1 | Hi | other | I'm not sure how to respond. | 2025-09-08 | NULL
+55 | 1 | Hi | other | I'm not sure how to respond. | 2025-09-08 | NULL
+56 | 1 | Hi | other | I'm not sure how to respond. | 2025-09-08 | NULL
+57 | 1 | Show me buses from Chandigarh to Jalandhar | other | I'm not sure how to respond. | 2025-09-09 | NULL
+58 | 1 | How are you doing today? | other | I'm not sure how to respond. | 2025-09-09 | NULL
+59 | 1 | Show me buses from Chandigarh to Jalandhar | bus_query | Buses from Chandigarh to Jalandhar:
+
+* PB09CD43... | 2025-09-09 | NULL
+60 | 1 | How are you doing today? | casual | I'm doing well, thank you! How can I help you w... | 2025-09-09 | NULL
+61 | 1 | HI | casual | Hello! How can I help you with your bus booking... | 2025-09-09 | NULL
+62 | 1 | How are you doing today? | casual | I'm doing well, thank you! How can I help you w... | 2025-09-09 | NULL
+63 | 1 | Show me buses from Chandigarh to Jalandhar | bus_query | Buses from Chandigarh to Jalandhar:
+
+* PB09CD43... | 2025-09-09 | NULL
+64 | 1 | What is the eta of bus | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 1064... | 2025-09-09 | NULL
+65 | 1 | Eta of bus from ludhiana to chandigarh | bus_query | Bus PB10AB1234 (Chandigarh to Ludhiana) is curr... | 2025-09-09 | NULL
+66 | 1 | what is the ETA of a bus | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 1064... | 2025-09-09 | NULL
+67 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+68 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+69 | 1 | what is the ETA of a bus | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 1064... | 2025-09-09 | NULL
+70 | 1 | What is the ETA of a bus | bus_query | To answer your question about the ETA of a bus,... | 2025-09-09 | NULL
+71 | 1 | Show me buses from Chandigarh to Jalandhar | bus_query | Please specify your travel date to show you ava... | 2025-09-09 | NULL
+72 | 1 | Show me buses from Chandigarh to Jalandhar | bus_query | Bus PB09CD4321 (Chandigarh to Jalandhar) is cur... | 2025-09-09 | NULL
+73 | 2 | What is the ETA of a bus | bus_query | To answer your ETA question, I need more inform... | 2025-09-09 | NULL
+74 | 2 | Show me buses from Chandigarh to Jalandhar | bus_query | Please specify your travel date and time to sho... | 2025-09-09 | NULL
+75 | 2 |  tomorrow at 10am | bus_query | I need more information to assist you with your... | 2025-09-09 | NULL
+76 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+77 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+78 | 1 | (venv) arjav-jain@arjav-jain-Inspiron-15-3520:~... | other | I'm sorry, I don't understand.  Please rephrase... | 2025-09-09 | NULL
+79 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+80 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+81 | 1 | Show buses from Chandigarh | bus_query | Please specify your destination city and date o... | 2025-09-09 | NULL
+82 | 1 | Chandigarh to Ludhiana at any time | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 429 ... | 2025-09-09 | NULL
+83 | 1 | Chandigarh to Ludhiana at any time and any date | bus_query | Okay, I'm searching for buses from Chandigarh t... | 2025-09-09 | NULL
+84 | 1 | any day and any time | bus_query | To help me find the best bus options for you, c... | 2025-09-09 | NULL
+85 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+86 | 1 | i want to travel from Chandigarh to Ludhiana | bus_query | Hi!  There are currently buses running from Cha... | 2025-09-09 | NULL
+87 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+88 | 1 | i want to travel from Chandigarh to Ludhiana | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+89 | 1 | show me all buses from Chandigarh | bus_query | Please specify your destination city from Chand... | 2025-09-09 | NULL
+90 | 1 | ludhiana to amritsar | bus_query | Here are the buses from Ludhiana to Amritsar:
+
+... | 2025-09-09 | NULL
+91 | 1 | ETA of this bus | bus_query | I need more information to answer your query. P... | 2025-09-09 | NULL
+92 | 1 | Bus No. PB11XY5678 | bus_query | I need more information to assist you with bus ... | 2025-09-09 | NULL
+93 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+94 | 1 | i want to travel from ludhiana to amritsar | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+95 | 1 | buses from Chandigarh to Jalandhar | bus_query | Here are the buses from Chandigarh to Jalandhar... | 2025-09-09 | NULL
+96 | 1 | ETA of this bus | bus_query | I need more information to answer. Please provi... | 2025-09-09 | NULL
+97 | 1 | PB09CD4321 | bus_query | Sorry, I don't have an ETA for bus PB09CD4321. | 2025-09-09 | NULL
+98 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+99 | 1 | buses from Chandigarh to Jalandhar | bus_query | Here are the buses from Chandigarh to Jalandhar... | 2025-09-09 | NULL
+100 | 1 | its ETA | bus_query | I need more information to check the ETA. Pleas... | 2025-09-09 | NULL
+101 | 1 | PB09CD4321 | bus_query | Bus PB09CD4321 (Chandigarh to Jalandhar) is cur... | 2025-09-09 | NULL
+102 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+103 | 1 | hi | casual | Hello! How can I assist you with your bus booki... | 2025-09-09 | NULL
+104 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+105 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+106 | 1 | hi | casual | Hello! How can I assist you with your bus booki... | 2025-09-09 | NULL
+107 | 1 | i want to travel from Chandigarh to Ludhiana | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 429 ... | 2025-09-09 | NULL
+108 | 1 | i want to travel from Chandigarh to Ludhiana | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+109 | 1 | Chandigarh to Jalandhar | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+110 | 1 | show all busses | bus_query | Here are the first 3 buses:
+
+* PB10AB1234: Chan... | 2025-09-09 | NULL
+111 | 1 | Chandigarh to Ludhiana | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+112 | 1 | show all busses | bus_query | Here are the first 3 buses:
+
+* PB10AB1234: Chan... | 2025-09-09 | NULL
+113 | 1 | Chandigarh to Ludhiana | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+114 | 1 | Chandigarh to Ludhiana | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+115 | 1 | show all buses | bus_query | Here are the first 3 buses:
+
+1. PB10AB1234 - Ch... | 2025-09-09 | NULL
+116 | 1 | ETA of PB11XY5678 | bus_query | I'm sorry, I don't have an ETA for bus PB11XY5678. | 2025-09-09 | NULL
+117 | 1 | capacity of this bus | bus_query | To answer your question about the bus capacity,... | 2025-09-09 | NULL
+118 | 1 | PB11XY5678 | bus_query | I'm sorry, I don't have an ETA for bus PB11XY5678. | 2025-09-09 | NULL
+119 | 1 | capacity of this bus PB11XY5678. | bus_query | The capacity of bus PB11XY5678 is 45. | 2025-09-09 | NULL
+120 | 1 | hi | casual | Hello! How can I assist you with buses today? | 2025-09-09 | NULL
+121 | 1 | show all busses | bus_query | Here's your bus info:
+
+Bus ID | Bus Number | Ca... | 2025-09-09 | NULL
+122 | 1 | show me all busses from ludhiana | bus_query | Buses from Ludhiana:
+
+PB10AB1234
+PB11XY5678 | 2025-09-09 | NULL
+123 | 1 | show me the details of this bus PB10AB1234 | bus_query | Bus PB10AB1234 Details:
+
+Route: Chandigarh to L... | 2025-09-09 | NULL
+124 | 1 | hi | casual | Hello! How can I help you with your bus booking... | 2025-09-09 | NULL
+125 | 1 | busses from ludiana | bus_query | Buses from Ludhiana:
+
+* PB11XY5678: Ludhiana to... | 2025-09-09 | NULL
+126 | 1 | give its all details | bus_query | I'm sorry, I need more information to assist yo... | 2025-09-09 | NULL
+127 | 1 | PB11XY5678 | bus_query | Bus PB11XY5678 Details:
+
+Route: Ludhiana to Amr... | 2025-09-09 | NULL
+128 | 1 | Hey | casual | Hi there! How can I help you with your bus trav... | 2025-09-09 | NULL
+129 | 1 | I want to travel from ludhiyana to chandigarh | bus_query | ❌ No buses found for your request. Please try a... | 2025-09-09 | NULL
+130 | 1 | Buses from Chandigarh | bus_query | Buses from Chandigarh:
+
+* PB10AB1234: Chandigar... | 2025-09-09 | NULL
+131 | 1 | HI | casual | Hello! How can I help you with your bus booking... | 2025-09-09 | NULL
+132 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-10 | NULL
+133 | 1 | Can you tell me when the bus from Chandigarh to... | bus_query | ⚠️ Sorry, I had trouble fetching bus info: 1064... | 2025-09-10 | NULL
+134 | 1 | Can you tell me when the bus from Chandigarh to... | bus_query | Sorry, I don't have the arrival time for buses ... | 2025-09-10 | NULL
+135 | 1 | What is ETA of bus from ludhiana to patiala | bus_query | Sorry, I don't have any information about bus E... | 2025-09-10 | NULL
+136 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-10 | NULL
+137 | 1 | What is ETA of bus from ludhiana to patiala | bus_query | Sorry, I don't have any information about the E... | 2025-09-10 | NULL
+138 | 1 | ETA of bus from ludhiana to patiala | bus_query | Sorry, I don't have any information about bus E... | 2025-09-10 | NULL
+139 | 1 | Show all buses | bus_query | Buses:
+
+PB10AB1234: Chandigarh to Ludhiana, Nea... | 2025-09-10 | NULL
+140 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-10 | NULL
+141 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-10 | NULL
+142 | 1 | Cancel | other | I'm sorry, I need more information to cancel yo... | 2025-09-10 | NULL
+143 | 1 | Hi | casual | Hello! How can I assist you with buses today? | 2025-09-10 | NULL
+144 | 1 | Show me all buses from Chandigarh | bus_query | Buses from Chandigarh: Routes 1, 2, & 4 | 2025-09-10 | NULL
+145 | 1 | Route 4 | bus_query | Route 4 (Patiala to Chandigarh):
+
+Bus PB39EF987... | 2025-09-10 | NULL
+146 | 1 | hi | casual | Hello! How can I help you with your bus booking... | 2025-09-10 | NULL
+147 | 1 | hi | casual | Hello! How can I assist you with your bus booki... | 2025-09-10 | NULL
+148 | 1 | i want to travel from chandigarh | bus_query | Routes from Chandigarh:
+
+* Chandigarh to Ludhia... | 2025-09-10 | NULL
+149 | 1 | Chandigarh to Ludhiana | bus_query | Buses from Chandigarh to Ludhiana:
+
+Bus No. PB1... | 2025-09-10 | NULL
+150 | 1 | i want buses info from chandigarh | bus_query | Buses from Chandigarh:
+
+* Chandigarh to Ludhian... | 2025-09-10 | NULL
+
+📝 150 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: DRIVER_AUTH
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• license_number: varchar(50) NOT NULL [UNI] 
+• password_hash: varchar(255) NOT NULL  
+• name: varchar(100) NOT NULL  
+• phone: varchar(20) NULL  
+• email: varchar(100) NULL  
+• is_active: tinyint(1) NULL [MUL] DEFAULT: 1
+• created_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+• updated_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 3
+
+📄 DATA:
+--------------------------------------------------
+id | license_number | password_hash | name | phone | email | is_active | created_at | updated_at
+------------------------------------------------------------------------------------------------
+1 | DL-1420110012345 | $2a$10$lPxLVxlqEV7rW.i65l6gguI1u3J9NdvJBqfS22z/... | Development Driver | +1234567890 | dev@driver.com | 1 | 2025-09-18 | 2025-09-18
+2 | DL-1420110067890 | $2a$10$PTnVLMjYVHquHr3gSIra7e4Rsw2Ji.Aud0YjQhST... | Amit Singh | +91-9876543211 | amit.driver@transportcl.com | 1 | 2025-09-18 | 2025-09-18
+3 | DL-1420110054321 | $2a$10$RqAjPlacsVlWc9d9PD7vhuJ.9ChFGvnUcMl8dEPz... | Suresh Sharma | +91-9876543212 | suresh.driver@transportcl.com | 1 | 2025-09-18 | 2025-09-18
+
+📝 3 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: DRIVER_ROUTE_STOPS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• route_id: int NOT NULL [MUL] 
+• stop_name: varchar(200) NOT NULL  
+• stop_order: int NOT NULL  
+• latitude: decimal(10,8) NULL  
+• longitude: decimal(11,8) NULL  
+• estimated_arrival_time: time NULL  
+• created_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 18
+
+📄 DATA:
+--------------------------------------------------
+id | route_id | stop_name | stop_order | latitude | longitude | estimated_arrival_time | created_at
+---------------------------------------------------------------------------------------------------
+25 | 5 | Delhi University | 1 | 28.69560000 | 77.20970000 | 06:00:00 | 2025-09-18
+26 | 5 | Kashmere Gate | 2 | 28.66750000 | 77.22730000 | 06:25:00 | 2025-09-18
+27 | 5 | New Delhi Railway Station | 3 | 28.64340000 | 77.21940000 | 06:45:00 | 2025-09-18
+28 | 5 | Dhaula Kuan | 4 | 28.59820000 | 77.15260000 | 07:10:00 | 2025-09-18
+29 | 5 | IGI Airport Terminal 3 | 5 | 28.55620000 | 77.09990000 | 07:35:00 | 2025-09-18
+30 | 6 | Gurgaon Sector 14 | 1 | 28.46010000 | 77.03920000 | 07:00:00 | 2025-09-18
+31 | 6 | IFFCO Chowk | 2 | 28.48170000 | 77.03650000 | 07:15:00 | 2025-09-18
+32 | 6 | Huda City Centre | 3 | 28.45950000 | 77.02660000 | 07:30:00 | 2025-09-18
+33 | 6 | Rajiv Chowk | 4 | 28.63280000 | 77.21970000 | 08:15:00 | 2025-09-18
+34 | 6 | Connaught Place | 5 | 28.63150000 | 77.21670000 | 08:25:00 | 2025-09-18
+43 | 4 | Your Current Location | 1 | 28.47090000 | 77.48400000 | NULL | 2025-09-18
+44 | 4 | Local Market North | 2 | 28.47300000 | 77.48550000 | NULL | 2025-09-18
+45 | 4 | Community Center | 3 | 28.47500000 | 77.48700000 | NULL | 2025-09-18
+46 | 4 | Shopping Complex | 4 | 28.47650000 | 77.48450000 | NULL | 2025-09-18
+47 | 4 | Hospital Junction | 5 | 28.47500000 | 77.48200000 | NULL | 2025-09-18
+48 | 4 | School Area | 6 | 28.47200000 | 77.48100000 | NULL | 2025-09-18
+49 | 4 | Local Market South | 7 | 28.46900000 | 77.48250000 | NULL | 2025-09-18
+50 | 4 | Your Current Location | 8 | 28.47090000 | 77.48400000 | NULL | 2025-09-18
+
+📝 18 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: DRIVER_ROUTES
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• route_number: varchar(50) NOT NULL [MUL] 
+• route_name: varchar(200) NOT NULL  
+• source_stop: varchar(100) NOT NULL  
+• destination_stop: varchar(100) NOT NULL  
+• total_stops: int NULL  DEFAULT: 0
+• estimated_duration: int NULL  DEFAULT: 0
+• is_active: tinyint(1) NULL [MUL] DEFAULT: 1
+• created_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+• updated_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 3
+
+📄 DATA:
+--------------------------------------------------
+id | route_number | route_name | source_stop | destination_stop | total_stops | estimated_duration | is_active | created_at | updated_at
+----------------------------------------------------------------------------------------------------------------------------------------
+4 | DL-CP-NP-001 | Connaught Place to Nehru Place | Connaught Place | Nehru Place | 7 | 120 | 1 | 2025-09-18 | 2025-09-18
+5 | DL-DU-IGI-002 | Delhi University to IGI Airport | Delhi University | IGI Airport | 5 | 120 | 1 | 2025-09-18 | 2025-09-18
+6 | DL-GGN-CP-003 | Gurgaon Sector 14 to Connaught Place | Gurgaon Sector 14 | Connaught Place | 5 | 120 | 1 | 2025-09-18 | 2025-09-18
+
+📝 3 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: DRIVER_SESSIONS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• driver_id: int NOT NULL [MUL] 
+• route_id: int NULL  
+• bus_number: varchar(50) NULL  
+• status: enum('offline','online','active') NULL [MUL] DEFAULT: offline
+• started_at: timestamp NULL  
+• ended_at: timestamp NULL  
+• created_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+• updated_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 1
+
+📄 DATA:
+--------------------------------------------------
+id | driver_id | route_id | bus_number | status | started_at | ended_at | created_at | updated_at
+-------------------------------------------------------------------------------------------------
+1 | 1 | 1 | NULL | active | 2025-09-18 | NULL | 2025-09-18 | 2025-09-18
+
+📝 1 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: DRIVERS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• driver_id: int NOT NULL [PRI] 
+• name: varchar(100) NOT NULL  
+• mobile_no: varchar(15) NULL [UNI] 
+• bus_id: int NULL [MUL] 
+• location: varchar(255) NULL  
+• shift_start: time NULL  
+• shift_end: time NULL  
+
+📊 RECORD COUNT: 4
+
+📄 DATA:
+--------------------------------------------------
+driver_id | name | mobile_no | bus_id | location | shift_start | shift_end
+--------------------------------------------------------------------------
+1 | Rajesh Kumar | 9876123456 | 1 | On route | 06:00:00 | 14:00:00
+2 | Baljit Singh | 9876234567 | 2 | Ludhiana Bus Stand | 08:00:00 | 16:00:00
+3 | Sukhdeep Kaur | 9876345678 | 3 | On route | 14:00:00 | 22:00:00
+4 | Gurpreet Singh | 9876456789 | 4 | Patiala Bus Stand | 07:00:00 | 15:00:00
+
+📝 4 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: LOCATION_UPDATES
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• session_id: int NOT NULL [MUL] 
+• latitude: decimal(10,8) NOT NULL  
+• longitude: decimal(11,8) NOT NULL  
+• accuracy: float NULL  DEFAULT: 0
+• speed: float NULL  DEFAULT: 0
+• bearing: float NULL  DEFAULT: 0
+• timestamp: timestamp NULL [MUL] DEFAULT: CURRENT_TIMESTAMP
+• location_source: enum('gps','network','gsm') NULL  DEFAULT: gps
+• device_type: enum('mobile_app','esp32_hardware','simulator') NULL [MUL] DEFAULT: mobile_app
+• device_id: varchar(100) NULL  
+• hardware_info: json NULL  
+
+📊 RECORD COUNT: 235
+
+📄 DATA:
+--------------------------------------------------
+id | session_id | latitude | longitude | accuracy | speed | bearing | timestamp | location_source | device_type | device_id | hardware_info
+-------------------------------------------------------------------------------------------------------------------------------------------
+1 | 1 | 28.47076167 | 77.48413000 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+2 | 1 | 28.47065833 | 77.48407333 | 5 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+3 | 1 | 28.47056167 | 77.48405667 | 4.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+4 | 1 | 28.47056167 | 77.48405667 | 4.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+5 | 1 | 28.47059833 | 77.48421500 | 11.300000190734863 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+6 | 1 | 28.47096833 | 77.48402500 | 11.600000381469727 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+7 | 1 | 28.47096833 | 77.48402500 | 11.600000381469727 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+8 | 1 | 28.47065000 | 77.48390500 | 6.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+9 | 1 | 28.47065000 | 77.48390500 | 6.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+10 | 1 | 28.47065000 | 77.48390500 | 6.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+11 | 1 | 28.47038000 | 77.48397667 | 1.899999976158142 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+12 | 1 | 28.47038000 | 77.48397667 | 1.899999976158142 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+13 | 1 | 28.47079000 | 77.48406167 | 4.199999809265137 | 1.0927553176879883 | 11.369999885559082 | 2025-09-18 | gps | mobile_app | NULL | NULL
+14 | 1 | 28.47093667 | 77.48408167 | 4.5 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+15 | 1 | 28.47093667 | 77.48408167 | 4.5 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+16 | 1 | 28.47093667 | 77.48408167 | 4.5 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+17 | 1 | 28.47093667 | 77.48408167 | 4.5 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+18 | 1 | 28.47096833 | 77.48397833 | 4.599999904632568 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+19 | 1 | 28.47095167 | 77.48408000 | 1.7999999523162842 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+20 | 1 | 28.47095167 | 77.48408000 | 1.7999999523162842 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+21 | 1 | 28.47095167 | 77.48408000 | 1.7999999523162842 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+22 | 1 | 28.47089833 | 77.48399500 | 1.7000000476837158 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+23 | 1 | 28.47089833 | 77.48399500 | 1.7000000476837158 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+24 | 1 | 28.47089833 | 77.48399500 | 1.7000000476837158 | NULL | 111.80000305175781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+25 | 1 | 28.47061500 | 77.48416667 | 6.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+26 | 1 | 28.47061500 | 77.48416667 | 6.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+27 | 1 | 28.47063500 | 77.48406500 | 3.9000000953674316 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+28 | 1 | 28.47079500 | 77.48401333 | 4.5 | 0.8184083104133606 | 48.599998474121094 | 2025-09-18 | gps | mobile_app | NULL | NULL
+29 | 1 | 28.47079500 | 77.48401333 | 4.5 | 0.8184083104133606 | 48.599998474121094 | 2025-09-18 | gps | mobile_app | NULL | NULL
+30 | 1 | 28.47079500 | 77.48401333 | 4.5 | 0.8184083104133606 | 48.599998474121094 | 2025-09-18 | gps | mobile_app | NULL | NULL
+31 | 1 | 28.47071167 | 77.48406000 | 3.700000047683716 | NULL | 85.52999877929688 | 2025-09-18 | gps | mobile_app | NULL | NULL
+32 | 1 | 28.47071167 | 77.48406000 | 3.700000047683716 | NULL | 85.52999877929688 | 2025-09-18 | gps | mobile_app | NULL | NULL
+33 | 1 | 28.47071167 | 77.48406000 | 3.700000047683716 | NULL | 85.52999877929688 | 2025-09-18 | gps | mobile_app | NULL | NULL
+34 | 1 | 28.47072167 | 77.48420667 | 11.600000381469727 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+35 | 1 | 28.47079833 | 77.48410000 | 6.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+36 | 1 | 28.47079833 | 77.48410000 | 6.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+37 | 1 | 28.47079833 | 77.48410000 | 6.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+38 | 1 | 28.47072333 | 77.48415833 | 3 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+39 | 1 | 28.47072333 | 77.48415833 | 3 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+40 | 1 | 28.47072333 | 77.48415833 | 3 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+41 | 1 | 28.47072333 | 77.48415833 | 3 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+42 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+43 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+44 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+45 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+46 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+47 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+48 | 1 | 28.47063833 | 77.48419500 | 2 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+49 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+50 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+51 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+52 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+53 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+54 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+55 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+56 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+57 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+58 | 1 | 28.47068500 | 77.48409333 | 5.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+59 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+60 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+61 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+62 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+63 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+64 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+65 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+66 | 1 | 28.47085833 | 77.48411167 | 2.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+67 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+68 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+69 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+70 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+71 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+72 | 1 | 28.47101000 | 77.48399000 | 1.7000000476837158 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+73 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+74 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+75 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+76 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+77 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+78 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+79 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+80 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+81 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+82 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+83 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+84 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+85 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+86 | 1 | 28.47092500 | 77.48402667 | 2.700000047683716 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+87 | 1 | 28.47098667 | 77.48395167 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+88 | 1 | 28.47098667 | 77.48395167 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+89 | 1 | 28.47098667 | 77.48395167 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+90 | 1 | 28.47098667 | 77.48395167 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+91 | 1 | 28.47091000 | 77.48401833 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+92 | 1 | 28.47091000 | 77.48401833 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+93 | 1 | 28.47091000 | 77.48401833 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+94 | 1 | 28.47091000 | 77.48401833 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+95 | 1 | 28.47083833 | 77.48424500 | 7.699999809265137 | 2.426915168762207 | 305.9100036621094 | 2025-09-18 | gps | mobile_app | NULL | NULL
+96 | 1 | 28.47091833 | 77.48405333 | 3.200000047683716 | NULL | 304.57000732421875 | 2025-09-18 | gps | mobile_app | NULL | NULL
+97 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+98 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+99 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+100 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+101 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+102 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+103 | 1 | 28.47097167 | 77.48403833 | 4.400000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+104 | 1 | 28.47110500 | 77.48390000 | 5.599999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+105 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+106 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+107 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+108 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+109 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+110 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+111 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+112 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+113 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+114 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+115 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+116 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+117 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+118 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+119 | 1 | 28.47091167 | 77.48413500 | 3.299999952316284 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+120 | 1 | 28.47095667 | 77.48402667 | 2.5999999046325684 | 0.272288054227829 | 329.45001220703125 | 2025-09-18 | gps | mobile_app | NULL | NULL
+121 | 1 | 28.47103000 | 77.48396000 | 3 | 0.9162055850028992 | 329.9700012207031 | 2025-09-18 | gps | mobile_app | NULL | NULL
+122 | 1 | 28.47099833 | 77.48406667 | 3.4000000953674316 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+123 | 1 | 28.47105167 | 77.48398000 | 3.5999999046325684 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+124 | 1 | 28.47096667 | 77.48394167 | 3.5 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+125 | 1 | 28.47097833 | 77.48404667 | 1.7999999523162842 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+126 | 1 | 28.47097833 | 77.48404667 | 1.7999999523162842 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+127 | 1 | 28.47097833 | 77.48404667 | 1.7999999523162842 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+128 | 1 | 28.47097833 | 77.48404667 | 1.7999999523162842 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+129 | 1 | 28.47107500 | 77.48404167 | 2.200000047683716 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+130 | 1 | 28.47107500 | 77.48404167 | 2.200000047683716 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+131 | 1 | 28.47107500 | 77.48404167 | 2.200000047683716 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+132 | 1 | 28.47107500 | 77.48404167 | 2.200000047683716 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+133 | 1 | 28.47107500 | 77.48404167 | 2.200000047683716 | NULL | 326.3599853515625 | 2025-09-18 | gps | mobile_app | NULL | NULL
+134 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+135 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+136 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+137 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+138 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+139 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+140 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+141 | 1 | 28.47098667 | 77.48403500 | 4.199999809265137 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+142 | 1 | 28.47092000 | 77.48410667 | 1.7000000476837158 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+143 | 1 | 28.47092000 | 77.48410667 | 1.7000000476837158 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+144 | 1 | 28.47092000 | 77.48410667 | 1.7000000476837158 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+145 | 1 | 28.47092000 | 77.48410667 | 1.7000000476837158 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+146 | 1 | 28.47104000 | 77.48413667 | 4.400000095367432 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+147 | 1 | 28.47104000 | 77.48413667 | 4.400000095367432 | NULL | 342.3999938964844 | 2025-09-18 | gps | mobile_app | NULL | NULL
+148 | 1 | 28.47098000 | 77.48404500 | 3.5999999046325684 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+149 | 1 | 28.47098000 | 77.48404500 | 3.5999999046325684 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+150 | 1 | 28.47101833 | 77.48413833 | 1.7999999523162842 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+151 | 1 | 28.47098333 | 77.48424167 | 1.7999999523162842 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+152 | 1 | 28.47102833 | 77.48415167 | 1.7999999523162842 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+153 | 1 | 28.47094500 | 77.48420500 | 3.700000047683716 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+154 | 1 | 28.47106167 | 77.48402333 | 4 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+155 | 1 | 28.47100833 | 77.48420500 | 3.200000047683716 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+156 | 1 | 28.47100833 | 77.48420500 | 3.200000047683716 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+157 | 1 | 28.47100833 | 77.48420500 | 3.200000047683716 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+158 | 1 | 28.47100833 | 77.48420500 | 3.200000047683716 | NULL | 332.7099914550781 | 2025-09-18 | gps | mobile_app | NULL | NULL
+159 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+160 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+161 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+162 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+163 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+164 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+165 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+166 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+167 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+168 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+169 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+170 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+171 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+172 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+173 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+174 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+175 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+176 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+177 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+178 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+179 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+180 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+181 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+182 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+183 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+184 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+185 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+186 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+187 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+188 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+189 | 1 | 28.49041833 | 77.45523333 | 9 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+190 | 1 | 28.63094333 | 77.46670000 | 18.899999618530273 | NULL | 173.08999633789062 | 2025-09-18 | gps | mobile_app | NULL | NULL
+191 | 1 | 28.63094333 | 77.46670000 | 18.899999618530273 | NULL | 173.08999633789062 | 2025-09-18 | gps | mobile_app | NULL | NULL
+192 | 1 | 28.63094333 | 77.46670000 | 18.899999618530273 | NULL | 173.08999633789062 | 2025-09-18 | gps | mobile_app | NULL | NULL
+193 | 1 | 28.63094333 | 77.46670000 | 18.899999618530273 | NULL | 173.08999633789062 | 2025-09-18 | gps | mobile_app | NULL | NULL
+194 | 1 | 28.63094333 | 77.46670000 | 18.899999618530273 | NULL | 173.08999633789062 | 2025-09-18 | gps | mobile_app | NULL | NULL
+195 | 1 | 28.47066167 | 77.48399500 | 7.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+196 | 1 | 28.47066167 | 77.48399500 | 7.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+197 | 1 | 28.47060333 | 77.48408000 | 6.800000190734863 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+198 | 1 | 28.47055167 | 77.48408500 | 6.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+199 | 1 | 28.47061167 | 77.48416500 | 6.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+200 | 1 | 28.47052667 | 77.48421000 | 7.099999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+201 | 1 | 28.47060500 | 77.48426167 | 6.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+202 | 1 | 28.47069667 | 77.48419167 | 6.900000095367432 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+203 | 1 | 28.47073167 | 77.48411833 | 7.599999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+204 | 1 | 28.47068667 | 77.48409333 | 8.5 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+205 | 1 | 28.47056333 | 77.48409333 | 2.0999999046325684 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+206 | 1 | 28.47056333 | 77.48409333 | 2.0999999046325684 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+207 | 1 | 28.47045833 | 77.48411500 | 3.0999999046325684 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+208 | 1 | 28.47045833 | 77.48411500 | 3.0999999046325684 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+209 | 1 | 28.47036833 | 77.48414667 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+210 | 1 | 28.47036833 | 77.48414667 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+211 | 1 | 28.47036833 | 77.48414667 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+212 | 1 | 28.47036833 | 77.48414667 | 1.7999999523162842 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+213 | 1 | 28.47030833 | 77.48405000 | 19 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+214 | 1 | 28.47088167 | 77.48425167 | 59 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+215 | 1 | 28.47064333 | 77.48423000 | 7.599999904632568 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+216 | 1 | 28.47076000 | 77.48422833 | 7.699999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+217 | 1 | 28.47080833 | 77.48432000 | 8 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+218 | 1 | 28.47080833 | 77.48432000 | 8 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+219 | 1 | 28.47081833 | 77.48442333 | 3.9000000953674316 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+220 | 1 | 28.47072500 | 77.48436167 | 4.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+221 | 1 | 28.47072500 | 77.48436167 | 4.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+222 | 1 | 28.47072500 | 77.48436167 | 4.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+223 | 1 | 28.47073833 | 77.48425500 | 1.899999976158142 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+224 | 1 | 28.47073833 | 77.48425500 | 1.899999976158142 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+225 | 1 | 28.47073833 | 77.48425500 | 1.899999976158142 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+226 | 1 | 28.47066333 | 77.48437500 | 7 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+227 | 1 | 28.47057667 | 77.48444833 | 8.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+228 | 1 | 28.47052167 | 77.48428833 | 7.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+229 | 1 | 28.47052167 | 77.48428833 | 7.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+230 | 1 | 28.47052167 | 77.48428833 | 7.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+231 | 1 | 28.47054333 | 77.48427167 | 7.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+232 | 1 | 28.47057333 | 77.48447333 | 7.800000190734863 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+233 | 1 | 28.47087667 | 77.48451833 | 7.800000190734863 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+234 | 1 | 28.47087667 | 77.48451833 | 7.800000190734863 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+235 | 1 | 28.47072000 | 77.48467667 | 8.199999809265137 | NULL | NULL | 2025-09-18 | gps | mobile_app | NULL | NULL
+
+📝 235 records shown
+
+📍 LOCATION TRACKING ANALYSIS:
+• Active sessions: 1
+• Latest update: 19/9/2025, 12:15:47 am
+• Average accuracy: 5 meters
+
+============================================================
+
+============================================================
+🏷️  TABLE: NOTIFICATIONS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• notification_id: int NOT NULL [PRI] 
+• user_id: int NULL [MUL] 
+• type: varchar(50) NULL  
+• message: text NULL  
+• sent_at: datetime NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 3
+
+📄 DATA:
+--------------------------------------------------
+notification_id | user_id | type | message | sent_at
+----------------------------------------------------
+1 | 1 | ETA Alert | Your bus PB10AB1234 will arrive at Sector 17 in... | 2025-09-03
+2 | 2 | Booking Confirmed | Your ticket Chandigarh → Jalandhar has been con... | 2025-09-03
+3 | 3 | Delay Alert | Bus PB11XY5678 is running 15 mins late from Lud... | 2025-09-03
+
+📝 3 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: REPORTS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• report_id: int NOT NULL [PRI] 
+• user_id: int NULL [MUL] 
+• incident_type: varchar(255) NOT NULL  
+• location: varchar(255) NULL  
+• location_name: varchar(500) NULL  
+• description: text NULL  
+• image_url: varchar(255) NULL  
+• reported_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 1
+
+📄 DATA:
+--------------------------------------------------
+report_id | user_id | incident_type | location | location_name | description | image_url | reported_at
+------------------------------------------------------------------------------------------------------
+1 | 4 | Car accident  | 28.4778805, 77.4877518 | NULL | Car  | uploads\dcb56c9cb5d6f070349d63717509339b | 2025-09-18
+
+📝 1 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: ROUTE_STOPS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• route_id: int NOT NULL [MUL] 
+• stop_name: varchar(200) NOT NULL  
+• stop_order: int NOT NULL  
+• latitude: decimal(10,8) NULL  
+• longitude: decimal(11,8) NULL  
+• estimated_arrival_time: time NULL  
+• created_at: timestamp NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 0
+
+
+============================================================
+
+============================================================
+🏷️  TABLE: ROUTES
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• route_id: int NOT NULL [PRI] 
+• route_name: varchar(100) NOT NULL  
+• start_stop_id: int NULL [MUL] 
+• end_stop_id: int NULL [MUL] 
+• distance_km: float NULL  
+
+📊 RECORD COUNT: 4
+
+📄 DATA:
+--------------------------------------------------
+route_id | route_name | start_stop_id | end_stop_id | distance_km
+-----------------------------------------------------------------
+1 | Chandigarh to Ludhiana | 1 | 3 | 100.5
+2 | Chandigarh to Jalandhar | 1 | 4 | 150
+3 | Ludhiana to Amritsar | 3 | 5 | 135
+4 | Patiala to Chandigarh | 6 | 1 | 75
+
+📝 4 records shown
+
+🛣️  ROUTE ANALYSIS:
+• Total network distance: 460.5 km
+• Average route distance: 115 km
+
+============================================================
+
+============================================================
+🏷️  TABLE: ROUTESTOPS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• id: int NOT NULL [PRI] 
+• route_id: int NULL [MUL] 
+• stop_id: int NULL [MUL] 
+• stop_order: int NULL  
+• scheduled_arrival: time NULL  
+• scheduled_departure: time NULL  
+• estimated_arrival: datetime NULL  
+• estimated_departure: datetime NULL  
+
+📊 RECORD COUNT: 12
+
+📄 DATA:
+--------------------------------------------------
+id | route_id | stop_id | stop_order | scheduled_arrival | scheduled_departure | estimated_arrival | estimated_departure
+------------------------------------------------------------------------------------------------------------------------
+1 | 1 | 1 | 1 | 09:00:00 | 09:05:00 | 2025-09-03 | 2025-09-03
+2 | 1 | 2 | 2 | 09:30:00 | 09:35:00 | 2025-09-03 | 2025-09-03
+3 | 1 | 3 | 3 | 10:00:00 | 10:05:00 | 2025-09-03 | 2025-09-03
+4 | 2 | 1 | 1 | NULL | NULL | NULL | NULL
+5 | 2 | 2 | 2 | NULL | NULL | NULL | NULL
+6 | 2 | 4 | 3 | NULL | NULL | NULL | NULL
+7 | 3 | 3 | 1 | NULL | NULL | NULL | NULL
+8 | 3 | 4 | 2 | NULL | NULL | NULL | NULL
+9 | 3 | 5 | 3 | NULL | NULL | NULL | NULL
+10 | 4 | 6 | 1 | NULL | NULL | NULL | NULL
+11 | 4 | 2 | 2 | NULL | NULL | NULL | NULL
+12 | 4 | 1 | 3 | NULL | NULL | NULL | NULL
+
+📝 12 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: TICKETS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• ticket_id: int NOT NULL [PRI] 
+• user_id: int NULL [MUL] 
+• bus_id: int NULL [MUL] 
+• route_id: int NULL [MUL] 
+• source_stop_id: int NULL [MUL] 
+• destination_stop_id: int NULL [MUL] 
+• fare: float NULL  
+• purchase_time: datetime NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 3
+
+📄 DATA:
+--------------------------------------------------
+ticket_id | user_id | bus_id | route_id | source_stop_id | destination_stop_id | fare | purchase_time
+-----------------------------------------------------------------------------------------------------
+1 | 1 | 1 | 1 | 1 | 3 | 150 | 2025-09-03
+2 | 2 | 3 | 2 | 1 | 4 | 220 | 2025-09-03
+3 | 3 | 2 | 3 | 3 | 5 | 180 | 2025-09-03
+
+📝 3 records shown
+
+============================================================
+
+============================================================
+🏷️  TABLE: USERS
+============================================================
+
+📋 TABLE STRUCTURE:
+--------------------------------------------------
+• user_id: int NOT NULL [PRI] 
+• name: varchar(100) NOT NULL  
+• age: int NULL  
+• mobile_no: varchar(15) NULL [UNI] 
+• email: varchar(100) NULL [UNI] 
+• password_hash: varchar(255) NOT NULL  
+• region_of_commute: varchar(100) NULL  
+• created_at: datetime NULL  DEFAULT: CURRENT_TIMESTAMP
+
+📊 RECORD COUNT: 4
+
+📄 DATA:
+--------------------------------------------------
+user_id | name | age | mobile_no | email | password_hash | region_of_commute | created_at
+-----------------------------------------------------------------------------------------
+1 | Arjun Singh | 24 | 9876543210 | arjun@example.com |  | Chandigarh | 2025-09-03
+2 | Simran Kaur | 29 | 9876501234 | simran@example.com |  | Ludhiana | 2025-09-03
+3 | Harpreet Gill | 35 | 9812345678 | harpreet@example.com |  | Amritsar | 2025-09-03
+4 | Aman Kumar  | 21 | 2222222222 | akhil9162337266@gmail.com | $2b$10$8JR1nUlzLuoB8y0NB8lj4O3q.BiIZchiVGzVGSs5... | NULL | 2025-09-18
+
+📝 4 records shown
+
+👤 USER ANALYSIS:
+• Average age: 27 years
+• Users with email: 4/4
+• Mobile numbers: 9876543210, 9876501234, 9812345678, 2222222222
+
+============================================================
+
+
+🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯 TESTING GUIDE 🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯🎯
+
+🔍 SEARCH TEST DATA:
+------------------------------
+Available Bus Stops:
+• Amritsar Bus Stand (Amritsar)
+• ISBT Chandigarh (Chandigarh)
+• Jalandhar Bus Stand (Jalandhar)
+• Ludhiana Bus Stand (Ludhiana)
+• Patiala Bus Stand (Patiala)
+• Sector 17 Bus Stand (Chandigarh)
+
+🛣️  Available Routes:
+• ISBT Chandigarh → Ludhiana Bus Stand (Chandigarh to Ludhiana)
+• ISBT Chandigarh → Jalandhar Bus Stand (Chandigarh to Jalandhar)
+• Ludhiana Bus Stand → Amritsar Bus Stand (Ludhiana to Amritsar)
+• Patiala Bus Stand → ISBT Chandigarh (Patiala to Chandigarh)
+
+🚌 Bus Fleet:
+• PB10AB1234 - Status: Running
+• PB11XY5678 - Status: Idle
+• PB09CD4321 - Status: Running
+• PB39EF9876 - Status: Idle
+
+✅ GUARANTEED WORKING SEARCHES:
+• Chandigarh → Ludhiana
+• ISBT → Ludhiana
+• Chandigarh → Jalandhar
+• Ludhiana → Amritsar
+• Patiala → Chandigarh
+
+================================================================================
+END OF DATABASE EXPORT
+================================================================================

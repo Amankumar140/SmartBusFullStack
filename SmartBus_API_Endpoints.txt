@@ -1,0 +1,824 @@
+# SmartBus FullStack Project - Complete API Endpoints List
+
+## Base URL
+- Development: `http://localhost:3001/api`
+
+---
+
+## Authentication APIs
+
+### POST `/auth/signup`
+- **Description:** User registration
+- **Request Body:**
+  ```json
+  {
+    "name": "string (required, min 3 chars)",
+    "mobile": "string (required, 10 digits)",
+    "password": "string (required, min 6 chars)",
+    "age": "number (optional, 1-120)",
+    "email": "string (optional, valid email)"
+  }
+  ```
+- **Response:** `{ "message": "User created successfully!" }`
+
+### POST `/auth/login`
+- **Description:** User login with token generation
+- **Request Body:**
+  ```json
+  {
+    "mobile": "string (required, 10 digits)",
+    "password": "string (required)"
+  }
+  ```
+- **Response:** `{ "token": "JWT_TOKEN" }`
+
+---
+
+## User APIs
+
+### GET `/users/profile`
+- **Description:** Get authenticated user's profile information
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "user_id": "number",
+    "name": "string",
+    "age": "number",
+    "mobile": "string",
+    "email": "string"
+  }
+  ```
+
+---
+
+## Bus APIs
+
+### GET `/buses`
+- **Description:** Get all buses with current drivers, routes, and location info
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "buses": [
+      {
+        "bus_id": "number",
+        "bus_number": "string",
+        "capacity": "number",
+        "status": "string",
+        "route": {
+          "route_id": "number",
+          "route_name": "string",
+          "source": "string",
+          "destination": "string",
+          "distance_km": "number"
+        },
+        "driver": {
+          "name": "string",
+          "mobile": "string"
+        },
+        "current_location": {
+          "latitude": "number",
+          "longitude": "number",
+          "last_updated": "datetime"
+        }
+      }
+    ]
+  }
+  ```
+
+### GET `/buses/search?source={source}&destination={destination}`
+- **Description:** Search buses by source and destination
+- **Headers:** `Authorization: Bearer <token>`
+- **Query Parameters:**
+  - `source` (required): Source location
+  - `destination` (required): Destination location
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "buses": [
+      {
+        "id": "number",
+        "bus_id": "number",
+        "bus_number": "string",
+        "busId": "string",
+        "status": "string",
+        "type": "string",
+        "capacity": "number",
+        "route_id": "number",
+        "route_name": "string",
+        "route": "string",
+        "from": "string",
+        "to": "string",
+        "distance_km": "number",
+        "driver_name": "string",
+        "eta": "string",
+        "coordinate": {
+          "latitude": "number",
+          "longitude": "number"
+        }
+      }
+    ]
+  }
+  ```
+
+### GET `/buses/:busId/details`
+- **Description:** Get detailed information about a specific bus
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `busId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "bus": {
+      "bus_id": "number",
+      "bus_number": "string",
+      "capacity": "number",
+      "status": "string",
+      "route": {
+        "route_id": "number",
+        "route_name": "string",
+        "source": "string",
+        "destination": "string",
+        "distance_km": "number"
+      },
+      "driver": {
+        "driver_id": "number",
+        "name": "string",
+        "mobile": "string",
+        "license_no": "string"
+      },
+      "current_location": {
+        "latitude": "number",
+        "longitude": "number",
+        "last_updated": "datetime"
+      }
+    }
+  }
+  ```
+
+### GET `/buses/:busId/route-stops`
+- **Description:** Get route stops for a specific bus (timeline data)
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `busId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "bus": {
+        "bus_id": "number",
+        "bus_number": "string",
+        "status": "string"
+      },
+      "route": {
+        "route_id": "number",
+        "route_name": "string",
+        "source_stop": "string",
+        "destination_stop": "string",
+        "total_stops": "number"
+      },
+      "timeline": {
+        "stops": [
+          {
+            "id": "number",
+            "name": "string",
+            "arrivalTime": "string",
+            "status": "string (upcoming/current/completed)",
+            "distance": "number",
+            "eta": "string",
+            "latitude": "number",
+            "longitude": "number",
+            "stop_order": "number"
+          }
+        ],
+        "current_stop_index": "number",
+        "last_updated": "datetime"
+      }
+    }
+  }
+  ```
+
+### GET `/buses/locations`
+- **Description:** Get real-time bus locations
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "locations": [
+      {
+        "bus_id": "number",
+        "bus_number": "string",
+        "status": "string",
+        "latitude": "number",
+        "longitude": "number",
+        "timestamp": "datetime",
+        "source_name": "string",
+        "destination_name": "string"
+      }
+    ]
+  }
+  ```
+
+### GET `/buses/stops`
+- **Description:** Get all bus stops with location information
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "stops": [
+      {
+        "stop_id": "number",
+        "stop_name": "string",
+        "location": "string",
+        "region": "string",
+        "latitude": "number",
+        "longitude": "number",
+        "routes_count": "number"
+      }
+    ]
+  }
+  ```
+
+### GET `/buses/route-locations`
+- **Description:** Get all unique route locations (sources and destinations)
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "stops": [
+      {
+        "stop_id": "string",
+        "stop_name": "string",
+        "location": "string",
+        "region": "string",
+        "latitude": "number",
+        "longitude": "number",
+        "routes_count": "number"
+      }
+    ]
+  }
+  ```
+
+### GET `/buses/test/data`
+- **Description:** Test endpoint for checking database connectivity and sample data
+- **Public Endpoint:** No authentication required
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "buses_count": "number",
+      "routes_count": "number",
+      "stops_count": "number",
+      "drivers_count": "number",
+      "sample_data": {
+        "bus": "object",
+        "route": "object",
+        "stop": "object",
+        "driver": "object"
+      }
+    }
+  }
+  ```
+
+---
+
+## Route APIs
+
+### GET `/routes`
+- **Description:** Get all available routes
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "routes": [
+        {
+          "route_id": "number",
+          "route_name": "string",
+          "source_stop": "string",
+          "destination_stop": "string",
+          "distance_km": "number",
+          "active_buses_count": "number",
+          "stops_count": "number"
+        }
+      ]
+    }
+  }
+  ```
+
+### GET `/routes/bus/:busId/timeline`
+- **Description:** Get timeline data for a specific bus's route (comprehensive route timeline)
+- **URL Parameters:** `busId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "bus": {
+        "bus_id": "number",
+        "bus_number": "string",
+        "capacity": "number",
+        "status": "string",
+        "current_location": "object",
+        "is_real_time": "boolean",
+        "last_seen": {
+          "stop_name": "string",
+          "status": "string",
+          "time": "string",
+          "eta": "string",
+          "coordinates": {
+            "latitude": "number",
+            "longitude": "number"
+          }
+        }
+      },
+      "route": {
+        "route_id": "number",
+        "route_name": "string",
+        "source_stop": "string",
+        "destination_stop": "string",
+        "distance_km": "number",
+        "total_stops": "number",
+        "is_real_time": "boolean"
+      },
+      "timeline": {
+        "current_stop_index": "number",
+        "stops": [
+          {
+            "id": "number",
+            "name": "string",
+            "arrivalTime": "string",
+            "status": "string",
+            "distance": "number",
+            "eta": "string",
+            "latitude": "number",
+            "longitude": "number",
+            "stop_order": "number"
+          }
+        ],
+        "last_updated": "datetime",
+        "mode": "string (real_time/static)"
+      },
+      "metadata": {
+        "total_stops": "number",
+        "completed_stops": "number",
+        "remaining_stops": "number",
+        "data_source": "string"
+      }
+    }
+  }
+  ```
+
+### GET `/routes/:routeId/stops`
+- **Description:** Get route stops for a specific route
+- **URL Parameters:** `routeId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "route_id": "number",
+      "route_name": "string",
+      "source": "string",
+      "destination": "string",
+      "distance_km": "number",
+      "total_stops": "number",
+      "stops": [
+        {
+          "id": "number",
+          "stop_name": "string",
+          "sequence_no": "number",
+          "latitude": "number",
+          "longitude": "number",
+          "estimated_arrival_time": "string",
+          "formatted_time": "string"
+        }
+      ]
+    }
+  }
+  ```
+
+### GET `/routes/test-db`
+- **Description:** Test database connection with comprehensive data
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Connected to NEW database successfully!",
+    "database_info": {
+      "host": "string",
+      "port": "string",
+      "database": "string",
+      "user": "string"
+    },
+    "table_counts": {
+      "routes": "number",
+      "stops": "number",
+      "buses": "number",
+      "users": "number"
+    },
+    "sample_data": "object"
+  }
+  ```
+
+### GET `/routes/users`
+- **Description:** Get all users data (admin function)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Users data retrieved successfully!",
+    "total_users": "number",
+    "users": "array"
+  }
+  ```
+
+---
+
+## Notification APIs
+
+### GET `/notifications`
+- **Description:** Get notifications for the logged-in user with filtering and pagination
+- **Headers:** `Authorization: Bearer <token>`
+- **Query Parameters:**
+  - `type` (optional): Filter by notification type (bus_arrival, bus_delay, bus_cancelled, route_change, service_alert, emergency, general)
+  - `priority` (optional): Filter by priority (low, medium, high, urgent)
+  - `is_read` (optional): Filter by read status (true/false)
+  - `limit` (optional): Number of notifications to return (default: 50)
+  - `offset` (optional): Number of notifications to skip (default: 0)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "notifications": [
+      {
+        "notification_id": "number",
+        "user_id": "number",
+        "title": "string",
+        "message": "string",
+        "type": "string (enum: bus_arrival, bus_delay, bus_cancelled, route_change, service_alert, emergency, general)",
+        "priority": "string (enum: low, medium, high, urgent)",
+        "is_read": "boolean",
+        "bus_id": "number (nullable)",
+        "route_id": "number (nullable)",
+        "created_at": "datetime",
+        "bus_number": "string (nullable)",
+        "source_name": "string (nullable)",
+        "destination_name": "string (nullable)"
+      }
+    ],
+    "unread_count": "number",
+    "total_count": "number"
+  }
+  ```
+
+### GET `/notifications/unread-count`
+- **Description:** Get count of unread notifications for the logged-in user
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "unread_count": "number"
+  }
+  ```
+
+### PATCH `/notifications/:notificationId/read`
+- **Description:** Mark a specific notification as read
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `notificationId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Notification marked as read"
+  }
+  ```
+
+### PATCH `/notifications/mark-all-read`
+- **Description:** Mark all notifications as read for the logged-in user
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "X notifications marked as read"
+  }
+  ```
+
+### POST `/notifications`
+- **Description:** Create a new notification (admin function or internal use)
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:**
+  ```json
+  {
+    "user_id": "number (required)",
+    "title": "string (required)",
+    "message": "string (required)",
+    "type": "string (optional, default: general)",
+    "priority": "string (optional, default: medium)",
+    "bus_id": "number (optional)",
+    "route_id": "number (optional)"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Notification created successfully",
+    "notification": {
+      "notification_id": "number",
+      "user_id": "number",
+      "title": "string",
+      "message": "string",
+      "type": "string",
+      "priority": "string",
+      "is_read": "boolean",
+      "bus_id": "number",
+      "route_id": "number",
+      "created_at": "datetime",
+      "bus_number": "string",
+      "source_name": "string",
+      "destination_name": "string"
+    }
+  }
+  ```
+
+### DELETE `/notifications/:notificationId`
+- **Description:** Delete a specific notification
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `notificationId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Notification deleted successfully"
+  }
+  ```
+
+---
+
+## Report APIs
+
+### POST `/reports`
+- **Description:** Submit a new report with optional image upload
+- **Headers:** `Authorization: Bearer <token>`
+- **Content-Type:** `multipart/form-data`
+- **Request Body:**
+  - `reportType` (string, required): Type of report
+  - `busId` (number, optional): Bus ID if report is bus-related
+  - `locationLat` (number, optional): Latitude of incident
+  - `locationLon` (number, optional): Longitude of incident
+  - `description` (string, required): Report description
+  - `image` (file, optional): Image attachment
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Report submitted successfully!"
+  }
+  ```
+
+### GET `/reports/all`
+- **Description:** Get all reports (admin function)
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "reports": [
+      {
+        "report_id": "number",
+        "user_id": "number",
+        "user_name": "string",
+        "user_mobile": "string",
+        "bus_id": "number",
+        "bus_number": "string",
+        "report_type": "string",
+        "location_lat": "number",
+        "location_lon": "number",
+        "description": "string",
+        "media_url": "string",
+        "created_at": "datetime"
+      }
+    ]
+  }
+  ```
+
+### GET `/reports/my-reports`
+- **Description:** Get current user's own reports
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "reports": [
+      {
+        "report_id": "number",
+        "bus_id": "number",
+        "bus_number": "string",
+        "report_type": "string",
+        "location_lat": "number",
+        "location_lon": "number",
+        "description": "string",
+        "media_url": "string",
+        "created_at": "datetime"
+      }
+    ]
+  }
+  ```
+
+---
+
+## Chat APIs
+
+### POST `/chat/save`
+- **Description:** Save chat conversation to database
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:**
+  ```json
+  {
+    "user_id": "number (required)",
+    "user_message": "string (required)",
+    "bot_response": "string (required)"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Chat messages saved successfully"
+  }
+  ```
+
+### GET `/chat/history/:userId`
+- **Description:** Get chat history for a user
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `userId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "messages": [
+      {
+        "id": "number",
+        "sender": "string (user/bot)",
+        "message": "string",
+        "created_at": "datetime"
+      }
+    ],
+    "count": "number"
+  }
+  ```
+
+### DELETE `/chat/clear/:userId`
+- **Description:** Clear chat history for a user
+- **Headers:** `Authorization: Bearer <token>`
+- **URL Parameters:** `userId` (required)
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Chat history cleared successfully",
+    "deletedCount": "number"
+  }
+  ```
+
+### GET `/chat/stats`
+- **Description:** Get chat statistics (admin function)
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "stats": {
+      "totalMessages": "number",
+      "userStats": "array",
+      "recentChats": "array"
+    }
+  }
+  ```
+
+---
+
+## WebSocket Events (Socket.IO)
+
+### Connection URL: `ws://localhost:3001` or `wss://your-domain.com`
+
+### Authentication:
+- Include token in socket handshake: `{ auth: { token: "JWT_TOKEN" } }`
+
+### Events:
+
+#### Outgoing (Server → Client)
+- **`bus-location-update`**: Real-time bus location updates
+  ```json
+  [
+    {
+      "bus_id": "number",
+      "bus_number": "string", 
+      "status": "string",
+      "latitude": "number",
+      "longitude": "number",
+      "timestamp": "datetime"
+    }
+  ]
+  ```
+
+- **`new_notification`**: Real-time notifications for specific users
+  ```json
+  [
+    {
+      "notification_id": "number",
+      "title": "string",
+      "message": "string",
+      "type": "string (enum)",
+      "priority": "string (enum)",
+      "bus_id": "number (nullable)",
+      "route_id": "number (nullable)",
+      "bus_number": "string (nullable)",
+      "source_name": "string (nullable)",
+      "destination_name": "string (nullable)",
+      "created_at": "datetime",
+      "timestamp": "datetime"
+    }
+  ]
+  ```
+
+- **`urgent_notifications`**: Urgent notifications broadcast to all users
+  ```json
+  [
+    {
+      "notification_id": "number",
+      "title": "string",
+      "message": "string",
+      "type": "string",
+      "priority": "urgent",
+      "created_at": "datetime"
+    }
+  ]
+  ```
+
+#### Connection Events:
+- **`connect`**: Client connected successfully
+- **`connect_error`**: Connection failed
+- **`disconnect`**: Client disconnected
+
+---
+
+## Error Responses
+
+### Standard Error Format:
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "error": "Detailed error message (in development)"
+}
+```
+
+### Common HTTP Status Codes:
+- **200**: Success
+- **201**: Created successfully
+- **400**: Bad request (validation errors)
+- **401**: Unauthorized (missing/invalid token)
+- **403**: Forbidden (valid token but insufficient permissions)
+- **404**: Not found
+- **500**: Internal server error
+
+---
+
+## Notes:
+1. All protected endpoints require `Authorization: Bearer <token>` header
+2. Tokens expire after 7 days
+3. Real-time updates are broadcast every 20 seconds
+4. File uploads are stored in `/uploads` directory
+5. Database uses MySQL with connection pooling
+6. CORS is enabled for all origins in development
+
+---
+
+## Development Environment:
+- **Server Port**: 3001
+- **Database**: MySQL
+- **Real-time**: Socket.IO
+- **File Storage**: Local filesystem (`/uploads`)
+- **Authentication**: JWT tokens
+- **Validation**: Zod schemas
+
+---
+
+Generated on: ${new Date().toLocaleDateString()}
+Total Endpoints: 34
+
+## Database Schema Updates:
+- **Notifications Table:** Updated with new schema including title, type enums, priority levels, read status, and foreign keys to buses and routes
+- **Enhanced Features:** Real-time notifications, priority-based filtering, read/unread tracking, and contextual bus/route information
+- **WebSocket Events:** Added urgent notifications broadcast and enhanced notification data structure
