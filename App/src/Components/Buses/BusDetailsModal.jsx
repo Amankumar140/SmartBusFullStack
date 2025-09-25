@@ -24,7 +24,7 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
     if (visible && bus) {
       // Fetch all bus details and real-time data
       fetchBusDetails();
-      fetchRouteStops(); 
+      fetchRouteStops();
       fetchRealTimeLocation();
       console.log('Bus details modal opened with bus:', bus);
     }
@@ -40,7 +40,7 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       status: bus.status || 'active',
       fuel_level: '85%',
       last_maintenance: '2024-01-15',
-      registration_number: bus.bus_number || 'PB-05-XXXX'
+      registration_number: bus.bus_number || 'PB-05-XXXX',
     };
   };
 
@@ -49,10 +49,10 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       console.log('No bus object provided, skipping API call');
       return;
     }
-    
+
     console.log('Using mock bus details for smooth operation');
     setLoading(true);
-    
+
     // Simulate API loading delay
     setTimeout(() => {
       setBusDetails(generateMockBusDetails());
@@ -63,91 +63,135 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
   // Generate intermediate stops based on route (same logic as RouteTimelineCard)
   const getIntermediateStops = (start, end) => {
     const routeStopsMap = {
-      'Amritsar': {
-        'Jalandhar': [{ name: 'Tarn Taran' }, { name: 'Goindwal Sahib' }],
-        'Ludhiana': [{ name: 'Tarn Taran' }, { name: 'Kapurthala' }, { name: 'Jalandhar' }],
-        'Chandigarh': [{ name: 'Kapurthala' }, { name: 'Jalandhar' }, { name: 'Ludhiana' }]
+      Amritsar: {
+        Jalandhar: [{ name: 'Tarn Taran' }, { name: 'Goindwal Sahib' }],
+        Ludhiana: [
+          { name: 'Tarn Taran' },
+          { name: 'Kapurthala' },
+          { name: 'Jalandhar' },
+        ],
+        Chandigarh: [
+          { name: 'Kapurthala' },
+          { name: 'Jalandhar' },
+          { name: 'Ludhiana' },
+        ],
       },
-      'Chandigarh': {
-        'Ludhiana': [{ name: 'Rajpura' }, { name: 'Patiala' }],
-        'Jalandhar': [{ name: 'Rajpura' }, { name: 'Patiala' }, { name: 'Sangrur' }],
-        'Amritsar': [{ name: 'Patiala' }, { name: 'Sangrur' }, { name: 'Jalandhar' }]
+      Chandigarh: {
+        Ludhiana: [{ name: 'Rajpura' }, { name: 'Patiala' }],
+        Jalandhar: [
+          { name: 'Rajpura' },
+          { name: 'Patiala' },
+          { name: 'Sangrur' },
+        ],
+        Amritsar: [
+          { name: 'Patiala' },
+          { name: 'Sangrur' },
+          { name: 'Jalandhar' },
+        ],
       },
-      'Ludhiana': {
-        'Jalandhar': [{ name: 'Phagwara' }],
-        'Amritsar': [{ name: 'Jalandhar' }, { name: 'Kapurthala' }],
-        'Chandigarh': [{ name: 'Sirhind' }, { name: 'Rajpura' }]
+      Ludhiana: {
+        Jalandhar: [{ name: 'Phagwara' }],
+        Amritsar: [{ name: 'Jalandhar' }, { name: 'Kapurthala' }],
+        Chandigarh: [{ name: 'Sirhind' }, { name: 'Rajpura' }],
       },
-      'Barnala': {
-        'Hoshiarpur': [{ name: 'Sangrur' }, { name: 'Ludhiana' }, { name: 'Jalandhar' }]
-      }
+      Barnala: {
+        Hoshiarpur: [
+          { name: 'Sangrur' },
+          { name: 'Ludhiana' },
+          { name: 'Jalandhar' },
+        ],
+      },
     };
-    
+
     const route = routeStopsMap[start]?.[end];
     if (route) {
       return route;
     }
-    
+
     // Fallback intermediate stops
-    return [
-      { name: 'City Center' },
-      { name: 'Bus Stand' }
-    ];
+    return [{ name: 'City Center' }, { name: 'Bus Stand' }];
   };
 
   const generateMockRouteStops = () => {
     // Use the exact same logic as RouteTimelineCard for consistency
     const busSource = bus?.source_stop || bus?.from || 'Source Stop';
-    const busDestination = bus?.destination_stop || bus?.to || 'Destination Stop';
-    
-    console.log('BusDetailsModal: Generating fallback stops for route:', busSource, 'to', busDestination);
-    
+    const busDestination =
+      bus?.destination_stop || bus?.to || 'Destination Stop';
+
+    console.log(
+      'BusDetailsModal: Generating fallback stops for route:',
+      busSource,
+      'to',
+      busDestination,
+    );
+
     // Generate intermediate stops based on the route
     const intermediateStops = getIntermediateStops(busSource, busDestination);
-    
+
     const fallbackStops = [
-      { 
-        id: 1, 
-        name: busSource, 
-        status: 'completed', 
-        eta: 'Departed', 
+      {
+        id: 1,
+        name: busSource,
+        status: 'completed',
+        eta: 'Departed',
         arrivalTime: '09:00 AM',
         time: '09:00 AM',
         distance: 0,
         stop_order: 1,
         stop_name: busSource,
         arrival_time: '09:00 AM',
-        formatted_time: '09:00 AM'
+        formatted_time: '09:00 AM',
       },
       ...intermediateStops.map((stop, index) => ({
         id: index + 2,
         name: stop.name,
         status: index === 0 ? 'current' : 'upcoming',
-        eta: index === 0 ? '2 min' : `${15 + (index * 12)} min`,
-        arrivalTime: `${9 + Math.floor((index + 1) * 0.25)}:${String(((index + 1) * 15) % 60).padStart(2, '0')} AM`,
-        time: `${9 + Math.floor((index + 1) * 0.25)}:${String(((index + 1) * 15) % 60).padStart(2, '0')} AM`,
+        eta: index === 0 ? '2 min' : `${15 + index * 12} min`,
+        arrivalTime: `${9 + Math.floor((index + 1) * 0.25)}:${String(
+          ((index + 1) * 15) % 60,
+        ).padStart(2, '0')} AM`,
+        time: `${9 + Math.floor((index + 1) * 0.25)}:${String(
+          ((index + 1) * 15) % 60,
+        ).padStart(2, '0')} AM`,
         distance: (index + 1) * 12.5,
         stop_order: index + 2,
         stop_name: stop.name,
-        arrival_time: `${9 + Math.floor((index + 1) * 0.25)}:${String(((index + 1) * 15) % 60).padStart(2, '0')} AM`,
-        formatted_time: `${9 + Math.floor((index + 1) * 0.25)}:${String(((index + 1) * 15) % 60).padStart(2, '0')} AM`
+        arrival_time: `${9 + Math.floor((index + 1) * 0.25)}:${String(
+          ((index + 1) * 15) % 60,
+        ).padStart(2, '0')} AM`,
+        formatted_time: `${9 + Math.floor((index + 1) * 0.25)}:${String(
+          ((index + 1) * 15) % 60,
+        ).padStart(2, '0')} AM`,
       })),
-      { 
-        id: intermediateStops.length + 2, 
-        name: busDestination, 
-        status: 'upcoming', 
-        eta: `${30 + (intermediateStops.length * 12)} min`, 
-        arrivalTime: `${10 + Math.floor(intermediateStops.length * 0.25)}:00 AM`,
+      {
+        id: intermediateStops.length + 2,
+        name: busDestination,
+        status: 'upcoming',
+        eta: `${30 + intermediateStops.length * 12} min`,
+        arrivalTime: `${
+          10 + Math.floor(intermediateStops.length * 0.25)
+        }:00 AM`,
         time: `${10 + Math.floor(intermediateStops.length * 0.25)}:00 AM`,
         distance: (intermediateStops.length + 2) * 12.5,
         stop_order: intermediateStops.length + 2,
         stop_name: busDestination,
-        arrival_time: `${10 + Math.floor(intermediateStops.length * 0.25)}:00 AM`,
-        formatted_time: `${10 + Math.floor(intermediateStops.length * 0.25)}:00 AM`
+        arrival_time: `${
+          10 + Math.floor(intermediateStops.length * 0.25)
+        }:00 AM`,
+        formatted_time: `${
+          10 + Math.floor(intermediateStops.length * 0.25)
+        }:00 AM`,
       },
     ];
-    
-    console.log('BusDetailsModal: Generated fallback timeline with', fallbackStops.length, 'stops for route:', busSource, '->', busDestination);
+
+    console.log(
+      'BusDetailsModal: Generated fallback timeline with',
+      fallbackStops.length,
+      'stops for route:',
+      busSource,
+      '->',
+      busDestination,
+    );
     return fallbackStops;
   };
 
@@ -156,14 +200,14 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       console.log('No bus provided for route stops');
       return;
     }
-    
+
     const busId = bus.bus_id || bus.id;
     if (!busId) {
       console.log('No valid bus ID for route stops, using mock data:', bus);
       setRouteStops(generateMockRouteStops());
       return;
     }
-    
+
     try {
       const token = await AsyncStorage.getItem('user_token');
       if (!token) {
@@ -171,17 +215,23 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
         setRouteStops(generateMockRouteStops());
         return;
       }
-      
+
       console.log('Fetching route stops for bus ID:', busId);
       // Use the same endpoint as Route Timeline Card for consistency
       const response = await apiClient.get(`/routes/bus/${busId}/timeline`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
-      if (response.data && response.data.success && response.data.data && response.data.data.timeline && response.data.data.timeline.stops) {
+
+      if (
+        response.data &&
+        response.data.success &&
+        response.data.data &&
+        response.data.data.timeline &&
+        response.data.data.timeline.stops
+      ) {
         // Process the timeline data exactly like RouteTimelineCard does
         const { timeline, route, bus: busData } = response.data.data;
-        
+
         if (timeline.stops && timeline.stops.length > 0) {
           const processedStops = timeline.stops.map(stop => ({
             id: stop.id,
@@ -194,34 +244,42 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
             stop_order: stop.stop_order,
             stop_name: stop.name,
             arrival_time: stop.arrivalTime,
-            formatted_time: stop.arrivalTime
+            formatted_time: stop.arrivalTime,
           }));
-          
+
           setRouteStops(processedStops);
-          console.log('Successfully fetched route stops:', processedStops.length);
-          
+          console.log(
+            'Successfully fetched route stops:',
+            processedStops.length,
+          );
+
           // Extract last seen data from backend if available
           if (busData && busData.last_seen) {
             const backendLastSeen = busData.last_seen;
             console.log('Backend last seen data received:', backendLastSeen);
-            
+
             // Store in busDetails for use in Last Seen section
             setBusDetails(prevDetails => ({
               ...prevDetails,
-              last_seen: backendLastSeen
+              last_seen: backendLastSeen,
             }));
           }
-          
+
           // Also check timeline level last seen data
           if (timeline.last_seen_stop) {
-            console.log('Timeline last seen data received:', timeline.last_seen_stop);
+            console.log(
+              'Timeline last seen data received:',
+              timeline.last_seen_stop,
+            );
             setRealTimeLocation(prev => ({
               ...prev,
-              last_seen: timeline.last_seen_stop
+              last_seen: timeline.last_seen_stop,
             }));
           }
         } else {
-          console.log('Timeline data exists but no stops found, using mock data');
+          console.log(
+            'Timeline data exists but no stops found, using mock data',
+          );
           setRouteStops(generateMockRouteStops());
         }
       } else {
@@ -229,14 +287,20 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
         setRouteStops(generateMockRouteStops());
       }
     } catch (error) {
-      console.error('Failed to fetch route stops from API:', error.response?.status, error.response?.data?.message || error.message);
-      
+      console.error(
+        'Failed to fetch route stops from API:',
+        error.response?.status,
+        error.response?.data?.message || error.message,
+      );
+
       if (error.response?.status === 404) {
-        console.log('Bus timeline not found - this is normal for buses not on active routes');
+        console.log(
+          'Bus timeline not found - this is normal for buses not on active routes',
+        );
       } else if (error.response?.status === 401) {
         console.error('Authentication error - token might be invalid');
       }
-      
+
       console.log('Using mock route stops as fallback');
       setRouteStops(generateMockRouteStops());
     }
@@ -250,7 +314,7 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       speed: Math.floor(Math.random() * 60) + 20, // 20-80 km/h
       heading: Math.floor(Math.random() * 360),
       accuracy: Math.floor(Math.random() * 10) + 5, // 5-15 meters
-      status: 'moving'
+      status: 'moving',
     };
   };
 
@@ -259,11 +323,10 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       console.log('No bus provided, skipping real-time location API call');
       return;
     }
-    
+
     console.log('Using mock real-time location for smooth operation');
     setRealTimeLocation(generateMockRealTimeLocation());
   };
-
 
   const handleTrackBus = () => {
     if (onTrackBus) {
@@ -272,14 +335,18 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
     onClose();
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = status => {
     switch (status?.toLowerCase()) {
       case 'active':
-      case 'running': return '#4CAF50';
+      case 'running':
+        return '#4CAF50';
       case 'inactive':
-      case 'idle': return '#FF5722';
-      case 'maintenance': return '#FF9800';
-      default: return '#757575';
+      case 'idle':
+        return '#FF5722';
+      case 'maintenance':
+        return '#FF9800';
+      default:
+        return '#757575';
     }
   };
 
@@ -297,7 +364,7 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
       </Modal>
     );
   }
-  
+
   // If no bus data, don't show modal
   if (!bus) {
     return null;
@@ -310,8 +377,15 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
           <View style={styles.header}>
             <View style={styles.headerLeft}>
               <Text style={styles.headerTitle}>Bus #{bus?.bus_number}</Text>
-              <View style={[styles.statusBadge, { backgroundColor: getStatusColor(bus?.status) }]}>
-                <Text style={styles.statusText}>{bus?.status?.toUpperCase()}</Text>
+              <View
+                style={[
+                  styles.statusBadge,
+                  { backgroundColor: getStatusColor(bus?.status) },
+                ]}
+              >
+                <Text style={styles.statusText}>
+                  {bus?.status?.toUpperCase()}
+                </Text>
               </View>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -319,7 +393,10 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
             </TouchableOpacity>
           </View>
 
-          <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             {/* Route Information */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
@@ -328,23 +405,38 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
               </View>
               <View style={styles.routeCard}>
                 <Text style={styles.routeName}>
-                  {busDetails?.route_name || bus?.route_name || bus?.route || 'Route not assigned'}
+                  {busDetails?.route_name ||
+                    bus?.route_name ||
+                    bus?.route ||
+                    'Route not assigned'}
                 </Text>
                 <Text style={styles.routeDistance}>
-                  Distance: {busDetails?.distance_km || bus?.distance_km || 'Unknown'} km
+                  Distance:{' '}
+                  {busDetails?.distance_km || bus?.distance_km || 'Unknown'} km
                 </Text>
                 <View style={styles.routePoints}>
                   <View style={styles.routePoint}>
                     <Icon name="my-location" size={16} color="#4CAF50" />
                     <Text style={styles.routePointText}>
-                      {busDetails?.start_stop_name || bus?.source_stop || bus?.from || 'Start point'}
+                      {busDetails?.start_stop_name ||
+                        bus?.source_stop ||
+                        bus?.from ||
+                        'Start point'}
                     </Text>
                   </View>
-                  <Icon name="arrow-downward" size={16} color="#666" style={styles.routeArrow} />
+                  <Icon
+                    name="arrow-downward"
+                    size={16}
+                    color="#666"
+                    style={styles.routeArrow}
+                  />
                   <View style={styles.routePoint}>
                     <Icon name="location-on" size={16} color="#FF5722" />
                     <Text style={styles.routePointText}>
-                      {busDetails?.end_stop_name || bus?.destination_stop || bus?.to || 'End point'}
+                      {busDetails?.end_stop_name ||
+                        bus?.destination_stop ||
+                        bus?.to ||
+                        'End point'}
                     </Text>
                   </View>
                 </View>
@@ -370,80 +462,133 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
             )}
 
             {/* Last Seen Section - Based on backend timeline data or local calculation */}
-            {routeStops.length > 0 && (() => {
-              // Try to get backend last seen data first
-              let backendLastSeen = null;
-              try {
-                // Check if we have backend data with last seen info
-                if (busDetails?.last_seen || realTimeLocation?.last_seen) {
-                  backendLastSeen = busDetails?.last_seen || realTimeLocation?.last_seen;
+            {routeStops.length > 0 &&
+              (() => {
+                // Try to get backend last seen data first
+                let backendLastSeen = null;
+                try {
+                  // Check if we have backend data with last seen info
+                  if (busDetails?.last_seen || realTimeLocation?.last_seen) {
+                    backendLastSeen =
+                      busDetails?.last_seen || realTimeLocation?.last_seen;
+                  }
+                } catch (error) {
+                  console.log('No backend last seen data available');
                 }
-              } catch (error) {
-                console.log('No backend last seen data available');
-              }
-              
-              // Fallback to local calculation from route stops
-              const currentStop = routeStops.find(stop => stop.status === 'current' || stop.eta === '5 min' || stop.eta?.includes('min'));
-              const lastCompletedStop = routeStops.filter(stop => stop.status === 'completed' || stop.eta === 'Passed').pop();
-              
-              let displayStop, isAtCurrentStop, statusMessage;
-              
-              if (backendLastSeen) {
-                // Use backend data
-                displayStop = {
-                  name: backendLastSeen.stop_name,
-                  arrivalTime: backendLastSeen.time,
-                  eta: backendLastSeen.eta,
-                  status: backendLastSeen.status
-                };
-                isAtCurrentStop = backendLastSeen.status === 'current';
-                statusMessage = backendLastSeen.message;
-              } else {
-                // Use local calculation
-                displayStop = currentStop || lastCompletedStop || routeStops[0];
-                isAtCurrentStop = currentStop !== undefined;
-                statusMessage = isAtCurrentStop ? 'Currently at stop' : 'Last seen at stop';
-              }
-              
-              if (!displayStop) return null;
-              
-              return (
-                <View style={styles.section}>
-                  <View style={styles.sectionHeader}>
-                    <Icon name="location-on" size={20} color="#2196F3" />
-                    <Text style={styles.sectionTitle}>Last Seen Location</Text>
-                  </View>
-                  <View style={styles.locationCard}>
-                    <View style={styles.lastSeenStatus}>
-                      <View style={styles.lastSeenHeader}>
-                        <View style={styles.lastSeenIndicator}>
-                          <View style={[styles.lastSeenDot, { backgroundColor: isAtCurrentStop ? '#4CAF50' : '#FF9800' }]} />
-                          <Text style={[styles.lastSeenText, { color: isAtCurrentStop ? '#4CAF50' : '#FF9800' }]}>
-                            {isAtCurrentStop ? 'Currently at' : 'Last seen at'}
-                          </Text>
+
+                // Fallback to local calculation from route stops
+                const currentStop = routeStops.find(
+                  stop =>
+                    stop.status === 'current' ||
+                    stop.eta === '5 min' ||
+                    stop.eta?.includes('min'),
+                );
+                const lastCompletedStop = routeStops
+                  .filter(
+                    stop =>
+                      stop.status === 'completed' || stop.eta === 'Passed',
+                  )
+                  .pop();
+
+                let displayStop, isAtCurrentStop, statusMessage;
+
+                if (backendLastSeen) {
+                  // Use backend data
+                  displayStop = {
+                    name: backendLastSeen.stop_name,
+                    arrivalTime: backendLastSeen.time,
+                    eta: backendLastSeen.eta,
+                    status: backendLastSeen.status,
+                  };
+                  isAtCurrentStop = backendLastSeen.status === 'current';
+                  statusMessage = backendLastSeen.message;
+                } else {
+                  // Use local calculation
+                  displayStop =
+                    currentStop || lastCompletedStop || routeStops[0];
+                  isAtCurrentStop = currentStop !== undefined;
+                  statusMessage = isAtCurrentStop
+                    ? 'Currently at stop'
+                    : 'Last seen at stop';
+                }
+
+                if (!displayStop) return null;
+
+                return (
+                  <View style={styles.section}>
+                    <View style={styles.sectionHeader}>
+                      <Icon name="location-on" size={20} color="#2196F3" />
+                      <Text style={styles.sectionTitle}>
+                        Last Seen Location
+                      </Text>
+                    </View>
+                    <View style={styles.locationCard}>
+                      <View style={styles.lastSeenStatus}>
+                        <View style={styles.lastSeenHeader}>
+                          <View style={styles.lastSeenIndicator}>
+                            <View
+                              style={[
+                                styles.lastSeenDot,
+                                {
+                                  backgroundColor: isAtCurrentStop
+                                    ? '#4CAF50'
+                                    : '#FF9800',
+                                },
+                              ]}
+                            />
+                            <Text
+                              style={[
+                                styles.lastSeenText,
+                                {
+                                  color: isAtCurrentStop
+                                    ? '#4CAF50'
+                                    : '#FF9800',
+                                },
+                              ]}
+                            >
+                              {isAtCurrentStop
+                                ? 'Currently at'
+                                : 'Last seen at'}
+                            </Text>
+                          </View>
                         </View>
+                        <Text style={styles.lastSeenLocation}>
+                          {displayStop.name ||
+                            displayStop.stop_name ||
+                            'Unknown Stop'}
+                        </Text>
+                        <Text style={styles.lastSeenTime}>
+                          {isAtCurrentStop
+                            ? `ETA: ${displayStop.eta || 'On time'}`
+                            : `Time: ${
+                                displayStop.arrivalTime ||
+                                displayStop.arrival_time ||
+                                'Unknown time'
+                              }`}
+                        </Text>
+                        <Text style={styles.lastSeenStatusMessage}>
+                          {statusMessage ||
+                            (displayStop.status
+                              ? `Status: ${
+                                  displayStop.status.charAt(0).toUpperCase() +
+                                  displayStop.status.slice(1)
+                                }`
+                              : '')}
+                        </Text>
+                        {backendLastSeen && (
+                          <View style={styles.dataSourceIndicator}>
+                            <Icon name="cloud-done" size={12} color="#4CAF50" />
+                            <Text style={styles.dataSourceText}>
+                              Live data from server
+                            </Text>
+                          </View>
+                        )}
                       </View>
-                      <Text style={styles.lastSeenLocation}>
-                        {displayStop.name || displayStop.stop_name || 'Unknown Stop'}
-                      </Text>
-                      <Text style={styles.lastSeenTime}>
-                        {isAtCurrentStop ? `ETA: ${displayStop.eta || 'On time'}` : `Time: ${displayStop.arrivalTime || displayStop.arrival_time || 'Unknown time'}`}
-                      </Text>
-                      <Text style={styles.lastSeenStatusMessage}>
-                        {statusMessage || (displayStop.status ? `Status: ${displayStop.status.charAt(0).toUpperCase() + displayStop.status.slice(1)}` : '')}
-                      </Text>
-                      {backendLastSeen && (
-                        <View style={styles.dataSourceIndicator}>
-                          <Icon name="cloud-done" size={12} color="#4CAF50" />
-                          <Text style={styles.dataSourceText}>Live data from server</Text>
-                        </View>
-                      )}
                     </View>
                   </View>
-                </View>
-              );
-            })()}
-            
+                );
+              })()}
+
             {/* Live Location Status - Commented out since live tracking is not working */}
             {/* 
             <View style={styles.section}>
@@ -483,59 +628,99 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
               <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                   <Icon name="timeline" size={20} color="#2196F3" />
-                  <Text style={styles.sectionTitle}>Route Timeline ({routeStops.length} stops)</Text>
-                </View>
-                
-                {/* Timeline Status Info */}
-                <View style={styles.timelineStatusInfo}>
-                  <Icon name={routeStops.length > 6 ? "check-circle" : "info"} size={14} color={routeStops.length > 6 ? "#4CAF50" : "#FF9800"} />
-                  <Text style={styles.timelineStatusText}>
-                    {routeStops.length > 6 ? 'Real route data loaded' : 'Sample timeline data'}
+                  <Text style={styles.sectionTitle}>
+                    Route Timeline ({routeStops.length} stops)
                   </Text>
                 </View>
-                
+
+                {/* Timeline Status Info */}
+                <View style={styles.timelineStatusInfo}>
+                  <Icon
+                    name={routeStops.length > 6 ? 'check-circle' : 'info'}
+                    size={14}
+                    color={routeStops.length > 6 ? '#4CAF50' : '#FF9800'}
+                  />
+                  <Text style={styles.timelineStatusText}>
+                    {routeStops.length > 6
+                      ? 'Real route data loaded'
+                      : 'Sample timeline data'}
+                  </Text>
+                </View>
+
                 <View style={styles.timelineContainer}>
                   {routeStops.slice(0, 8).map((stop, index) => {
                     // Enhanced stop data processing
-                    const stopName = stop.name || stop.stop_name || `Stop ${index + 1}`;
-                    const stopTime = stop.arrivalTime || stop.arrival_time || stop.formatted_time || `${9 + index}:${(index * 15) % 60 < 10 ? '0' : ''}${(index * 15) % 60} AM`;
-                    const stopStatus = stop.eta || stop.status || (index < 2 ? 'Completed' : index === 2 ? 'Current' : 'Upcoming');
-                    
+                    const stopName =
+                      stop.name || stop.stop_name || `Stop ${index + 1}`;
+                    const stopTime =
+                      stop.arrivalTime ||
+                      stop.arrival_time ||
+                      stop.formatted_time ||
+                      `${9 + index}:${(index * 15) % 60 < 10 ? '0' : ''}${
+                        (index * 15) % 60
+                      } AM`;
+                    const stopStatus =
+                      stop.eta ||
+                      stop.status ||
+                      (index < 2
+                        ? 'Completed'
+                        : index === 2
+                        ? 'Current'
+                        : 'Upcoming');
+
                     return (
-                      <View key={stop.stop_id || stop.id || index} style={styles.timelineItem}>
+                      <View
+                        key={stop.stop_id || stop.id || index}
+                        style={styles.timelineItem}
+                      >
                         <View style={styles.timelineMarker}>
-                          <View style={[
-                            styles.timelineDot,
-                            index === 0 && styles.timelineStartDot,
-                            index === routeStops.slice(0, 8).length - 1 && styles.timelineEndDot,
-                            index === 2 && styles.timelineCurrentDot
-                          ]} />
+                          <View
+                            style={[
+                              styles.timelineDot,
+                              index === 0 && styles.timelineStartDot,
+                              index === routeStops.slice(0, 8).length - 1 &&
+                                styles.timelineEndDot,
+                              index === 2 && styles.timelineCurrentDot,
+                            ]}
+                          />
                           {index < routeStops.slice(0, 8).length - 1 && (
-                            <View style={[
-                              styles.timelineLine,
-                              index < 2 && styles.timelineCompletedLine
-                            ]} />
+                            <View
+                              style={[
+                                styles.timelineLine,
+                                index < 2 && styles.timelineCompletedLine,
+                              ]}
+                            />
                           )}
                         </View>
                         <View style={styles.timelineContent}>
-                          <Text style={[
-                            styles.stopName,
-                            index === 2 && styles.currentStopName
-                          ]}>{stopName}</Text>
+                          <Text
+                            style={[
+                              styles.stopName,
+                              index === 2 && styles.currentStopName,
+                            ]}
+                          >
+                            {stopName}
+                          </Text>
                           <Text style={styles.stopTime}>{stopTime}</Text>
-                          <Text style={[
-                            styles.stopLocation,
-                            index < 2 && styles.completedStopStatus,
-                            index === 2 && styles.currentStopStatus
-                          ]}>{stopStatus}</Text>
+                          <Text
+                            style={[
+                              styles.stopLocation,
+                              index < 2 && styles.completedStopStatus,
+                              index === 2 && styles.currentStopStatus,
+                            ]}
+                          >
+                            {stopStatus}
+                          </Text>
                         </View>
                       </View>
                     );
                   })}
-                  
+
                   {routeStops.length > 8 && (
                     <View style={styles.moreStopsIndicator}>
-                      <Text style={styles.moreStopsText}>+{routeStops.length - 8} more stops</Text>
+                      <Text style={styles.moreStopsText}>
+                        +{routeStops.length - 8} more stops
+                      </Text>
                     </View>
                   )}
                 </View>
@@ -561,7 +746,12 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
                 </View>
                 <View style={styles.specRow}>
                   <Text style={styles.specLabel}>Status:</Text>
-                  <Text style={[styles.specValue, { color: getStatusColor(bus?.status) }]}>
+                  <Text
+                    style={[
+                      styles.specValue,
+                      { color: getStatusColor(bus?.status) },
+                    ]}
+                  >
                     {bus?.status?.toUpperCase()}
                   </Text>
                 </View>
@@ -571,12 +761,12 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
 
           {/* Action Buttons */}
           <View style={styles.footer}>
-            {(bus?.status?.toLowerCase() === 'active' || bus?.status?.toLowerCase() === 'running') && (
+            {/*{(bus?.status?.toLowerCase() === 'active' || bus?.status?.toLowerCase() === 'running') && (
               <TouchableOpacity onPress={handleTrackBus} style={styles.trackButton}>
                 <Icon name="my-location" size={20} color="white" />
                 <Text style={styles.trackButtonText}>Track on Map</Text>
               </TouchableOpacity>
-            )}
+            )} */}
             <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
               <Text style={styles.cancelButtonText}>Close</Text>
             </TouchableOpacity>
