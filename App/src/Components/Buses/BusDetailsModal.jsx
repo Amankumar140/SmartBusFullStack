@@ -195,6 +195,117 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
     return fallbackStops;
   };
 
+  // const fetchRouteStops = async () => {
+  //   if (!bus) {
+  //     console.log('No bus provided for route stops');
+  //     return;
+  //   }
+
+  //   const busId = bus.bus_id || bus.id;
+  //   if (!busId) {
+  //     console.log('No valid bus ID for route stops, using mock data:', bus);
+  //     setRouteStops(generateMockRouteStops());
+  //     return;
+  //   }
+
+  //   try {
+  //     const token = await AsyncStorage.getItem('user_token');
+  //     if (!token) {
+  //       console.log('No token found for route stops, using mock data');
+  //       setRouteStops(generateMockRouteStops());
+  //       return;
+  //     }
+
+  //     console.log('Fetching route stops for bus ID:', busId);
+  //     // Use the same endpoint as Route Timeline Card for consistency
+  //     const response = await apiClient.get(`/routes/bus/${busId}/timeline`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+
+  //     if (
+  //       response.data &&
+  //       response.data.success &&
+  //       response.data.data &&
+  //       response.data.data.timeline &&
+  //       response.data.data.timeline.stops
+  //     ) {
+  //       // Process the timeline data exactly like RouteTimelineCard does
+  //       const { timeline, route, bus: busData } = response.data.data;
+
+  //       if (timeline.stops && timeline.stops.length > 0) {
+  //         const processedStops = timeline.stops.map(stop => ({
+  //           id: stop.id,
+  //           name: stop.name,
+  //           status: stop.status,
+  //           eta: stop.eta,
+  //           arrivalTime: stop.arrivalTime,
+  //           time: stop.time || stop.arrivalTime,
+  //           distance: stop.distance,
+  //           stop_order: stop.stop_order,
+  //           stop_name: stop.name,
+  //           arrival_time: stop.arrivalTime,
+  //           formatted_time: stop.arrivalTime,
+  //         }));
+
+  //         setRouteStops(processedStops);
+  //         console.log(
+  //           'Successfully fetched route stops:',
+  //           processedStops.length,
+  //         );
+
+  //         // Extract last seen data from backend if available
+  //         if (busData && busData.last_seen) {
+  //           const backendLastSeen = busData.last_seen;
+  //           console.log('Backend last seen data received:', backendLastSeen);
+
+  //           // Store in busDetails for use in Last Seen section
+  //           setBusDetails(prevDetails => ({
+  //             ...prevDetails,
+  //             last_seen: backendLastSeen,
+  //           }));
+  //         }
+
+  //         // Also check timeline level last seen data
+  //         if (timeline.last_seen_stop) {
+  //           console.log(
+  //             'Timeline last seen data received:',
+  //             timeline.last_seen_stop,
+  //           );
+  //           setRealTimeLocation(prev => ({
+  //             ...prev,
+  //             last_seen: timeline.last_seen_stop,
+  //           }));
+  //         }
+  //       } else {
+  //         console.log(
+  //           'Timeline data exists but no stops found, using mock data',
+  //         );
+  //         setRouteStops(generateMockRouteStops());
+  //       }
+  //     } else {
+  //       console.log('API returned no stops, using mock data');
+  //       setRouteStops(generateMockRouteStops());
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       'Failed to fetch route stops from API:',
+  //       error.response?.status,
+  //       error.response?.data?.message || error.message,
+  //     );
+
+  //     if (error.response?.status === 404) {
+  //       console.log(
+  //         'Bus timeline not found - this is normal for buses not on active routes',
+  //       );
+  //     } else if (error.response?.status === 401) {
+  //       console.error('Authentication error - token might be invalid');
+  //     }
+
+  //     console.log('Using mock route stops as fallback');
+  //     setRouteStops(generateMockRouteStops());
+  //   }
+  // };
+
   const fetchRouteStops = async () => {
     if (!bus) {
       console.log('No bus provided for route stops');
@@ -202,6 +313,9 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
     }
 
     const busId = bus.bus_id || bus.id;
+    // THE KEY: Get the route_id that was assigned during the search.
+    const searchedRouteId = bus.route_id;
+
     if (!busId) {
       console.log('No valid bus ID for route stops, using mock data:', bus);
       setRouteStops(generateMockRouteStops());
@@ -216,11 +330,18 @@ const BusDetailsModal = ({ visible, bus, onClose, onTrackBus }) => {
         return;
       }
 
-      console.log('Fetching route stops for bus ID:', busId);
-      // Use the same endpoint as Route Timeline Card for consistency
-      const response = await apiClient.get(`/routes/bus/${busId}/timeline`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      console.log(
+        `Fetching route stops for bus ID: ${busId} on SEARCHED route ID: ${searchedRouteId}`,
+      );
+
+      // --- MODIFIED API CALL ---
+      // We now pass the 'searchedRouteId' as a query parameter.
+      const response = await apiClient.get(
+        `/routes/bus/${busId}/timeline?route_id=${searchedRouteId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (
         response.data &&

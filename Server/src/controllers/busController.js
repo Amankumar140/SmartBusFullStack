@@ -377,26 +377,178 @@ exports.getBusDetails = async (req, res) => {
 };
 
 // Get route stops for a specific bus - NEW ENDPOINT FOR TIMELINE
+// exports.getBusRouteStops = async (req, res) => {
+//   const { busId } = req.params;
+  
+//   console.log('🔍 [BUS ROUTE STOPS] Request for bus:', busId);
+  
+//   if (!busId) {
+//     return res.status(400).json({ message: 'Bus ID is required.' });
+//   }
+
+//   try {
+//     // First, find the route this bus is assigned to
+//     const busRouteQuery = `
+//       SELECT 
+//         b.bus_id,
+//         b.bus_number,
+//         b.status,
+//         r.route_id,
+//         r.source_name,
+//         r.destination_name,
+//         r.total_distance_km
+//       FROM buses b
+//       LEFT JOIN driver_sessions ds ON b.bus_id = ds.bus_id AND ds.end_time IS NULL
+//       LEFT JOIN routes r ON ds.route_id = r.route_id
+//       WHERE b.bus_id = ?
+//       LIMIT 1
+//     `;
+    
+//     const [busInfo] = await db.query(busRouteQuery, [busId]);
+    
+//     if (busInfo.length === 0) {
+//       return res.status(404).json({ message: 'Bus not found.' });
+//     }
+
+//     const bus = busInfo[0];
+    
+//     // If bus has no active route, assign a route based on bus ID for variety
+//     let routeId = bus.route_id;
+//     const requestedRouteId = req.query.route_id || req.body.route_id;
+//     if (!routeId && requestedRouteId) {
+//       // Assign different routes to different buses for variety
+//       const routeAssignmentQuery = `
+//         SELECT route_id FROM routes 
+//         ORDER BY route_id 
+//         LIMIT 1 OFFSET ?
+//       `;
+//       const routeOffset = (parseInt(busId) - 1) % 3; // Cycle through first 3 routes
+//       const [assignedRoutes] = await db.query(routeAssignmentQuery, [routeOffset]);
+      
+//       if (assignedRoutes.length === 0) {
+//         // Fallback to first available route
+//         const [fallbackRoutes] = await db.query('SELECT route_id FROM routes LIMIT 1');
+//         routeId = fallbackRoutes.length > 0 ? fallbackRoutes[0].route_id : null;
+//       } else {
+//         routeId = assignedRoutes[0].route_id;
+//       }
+      
+//       console.log(`🚌 Bus ${busId} assigned to route ${routeId} (dynamic assignment)`);
+//     } else {
+//       console.log(`🚌 Bus ${busId} has active route ${routeId}`);
+//     }
+    
+//     if (!routeId) {
+//       return res.status(404).json({ message: 'No route found for this bus.' });
+//     }
+    
+//     // Get all stops for this route
+//     const stopsQuery = `
+//       SELECT 
+//         s.stop_id,
+//         s.stop_name,
+//         s.stop_lat,
+//         s.stop_lon,
+//         s.sequence_no,
+//         r.source_name,
+//         r.destination_name
+//       FROM stops s
+//       JOIN routes r ON s.route_id = r.route_id
+//       WHERE s.route_id = ?
+//       ORDER BY s.sequence_no
+//     `;
+    
+//     const [stops] = await db.query(stopsQuery, [routeId]);
+    
+//     console.log('🗺️ Found', stops.length, 'stops for route', routeId);
+    
+//     // Transform stops for frontend timeline
+//     const transformedStops = stops.map((stop, index) => {
+//       const isFirst = index === 0;
+//       const isLast = index === stops.length - 1;
+//       const isCurrent = index === Math.floor(stops.length / 3); // Mock current position
+      
+//       let status = 'upcoming';
+//       if (index < isCurrent) status = 'completed';
+//       if (index === isCurrent) status = 'current';
+      
+//       // Generate realistic times
+//       const baseTime = new Date();
+//       baseTime.setHours(9, 0, 0); // Start at 9 AM
+//       baseTime.setMinutes(baseTime.getMinutes() + (index * 15)); // 15 min intervals
+      
+//       return {
+//         id: stop.stop_id,
+//         name: stop.stop_name,
+//         arrivalTime: baseTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+//         status: status,
+//         distance: Math.round(index * 10), // Mock distance calculation
+//         eta: status === 'completed' ? 'Passed' : status === 'current' ? 'Now' : `${15 - (index - isCurrent) * 5} min`,
+//         latitude: stop.stop_lat || 0,
+//         longitude: stop.stop_lon || 0,
+//         stop_order: stop.sequence_no
+//       };
+//     });
+
+//     const response = {
+//       success: true,
+//       data: {
+//         bus: {
+//           bus_id: bus.bus_id,
+//           bus_number: bus.bus_number,
+//           status: bus.status || 'available'
+//         },
+//         route: {
+//           route_id: routeId,
+//           route_name: `${stops[0]?.source_name || 'Unknown'} to ${stops[0]?.destination_name || 'Unknown'}`,
+//           source_stop: stops[0]?.source_name || 'Unknown',
+//           destination_stop: stops[0]?.destination_name || 'Unknown',
+//           total_stops: transformedStops.length
+//         },
+//         timeline: {
+//           stops: transformedStops,
+//           current_stop_index: Math.floor(transformedStops.length / 3),
+//           last_updated: new Date().toISOString()
+//         }
+//       }
+//     };
+
+//     console.log('✅ Returning timeline with', transformedStops.length, 'stops');
+//     res.json(response);
+    
+//   } catch (error) {
+//     console.error('❌ Error fetching bus route stops:', error);
+//     res.status(500).json({ 
+//       success: false,
+//       message: 'Server error while fetching route stops',
+//       error: error.message 
+//     });
+//   }
+// };
+
+// Get route stops for a specific bus - CORRECTED LOGIC
 exports.getBusRouteStops = async (req, res) => {
   const { busId } = req.params;
-  
+  // Get the route_id passed from the frontend search context
+  const { route_id: requestedRouteId } = req.query;
+
   console.log('🔍 [BUS ROUTE STOPS] Request for bus:', busId);
-  
+  if (requestedRouteId) {
+    console.log('   -> With requested route_id:', requestedRouteId);
+  }
+
   if (!busId) {
     return res.status(400).json({ message: 'Bus ID is required.' });
   }
 
   try {
-    // First, find the route this bus is assigned to
+    // First, find the bus and its CURRENTLY ACTIVE route, if any
     const busRouteQuery = `
       SELECT 
         b.bus_id,
         b.bus_number,
         b.status,
-        r.route_id,
-        r.source_name,
-        r.destination_name,
-        r.total_distance_km
+        r.route_id
       FROM buses b
       LEFT JOIN driver_sessions ds ON b.bus_id = ds.bus_id AND ds.end_time IS NULL
       LEFT JOIN routes r ON ds.route_id = r.route_id
@@ -411,46 +563,35 @@ exports.getBusRouteStops = async (req, res) => {
     }
 
     const bus = busInfo[0];
-    
-    // If bus has no active route, assign a route based on bus ID for variety
-    let routeId = bus.route_id;
-    if (!routeId) {
-      // Assign different routes to different buses for variety
-      const routeAssignmentQuery = `
-        SELECT route_id FROM routes 
-        ORDER BY route_id 
-        LIMIT 1 OFFSET ?
-      `;
-      const routeOffset = (parseInt(busId) - 1) % 3; // Cycle through first 3 routes
-      const [assignedRoutes] = await db.query(routeAssignmentQuery, [routeOffset]);
-      
-      if (assignedRoutes.length === 0) {
-        // Fallback to first available route
-        const [fallbackRoutes] = await db.query('SELECT route_id FROM routes LIMIT 1');
-        routeId = fallbackRoutes.length > 0 ? fallbackRoutes[0].route_id : null;
-      } else {
-        routeId = assignedRoutes[0].route_id;
-      }
-      
-      console.log(`🚌 Bus ${busId} assigned to route ${routeId} (dynamic assignment)`);
+    let routeId;
+
+    // --- LOGIC TO DETERMINE THE CORRECT ROUTE ID ---
+    if (bus.route_id) {
+      // 1. PRIORITY: The bus is on an active trip. Use its live route_id.
+      routeId = bus.route_id;
+      console.log(`🚌 Bus ${busId} has a LIVE active route: ${routeId}`);
+    } else if (requestedRouteId) {
+      // 2. SECONDARY: The bus is available, so use the route_id from the user's search.
+      routeId = requestedRouteId;
+      console.log(`🚌 Bus ${busId} is available. Using REQUESTED route from search: ${routeId}`);
     } else {
-      console.log(`🚌 Bus ${busId} has active route ${routeId}`);
+      // 3. FALLBACK: The bus is available but no route was requested. Assign a default for display.
+      const [fallbackRoutes] = await db.query('SELECT route_id FROM routes ORDER BY route_id LIMIT 1');
+      if (fallbackRoutes.length > 0) {
+        routeId = fallbackRoutes[0].route_id;
+        console.log(`⚠️ No live or requested route. Using FALLBACK route: ${routeId}`);
+      }
     }
     
     if (!routeId) {
-      return res.status(404).json({ message: 'No route found for this bus.' });
+      return res.status(404).json({ message: 'No route could be determined for this bus.' });
     }
     
-    // Get all stops for this route
+    // Get all stops for the determined route
     const stopsQuery = `
       SELECT 
-        s.stop_id,
-        s.stop_name,
-        s.stop_lat,
-        s.stop_lon,
-        s.sequence_no,
-        r.source_name,
-        r.destination_name
+        s.stop_id, s.stop_name, s.stop_lat, s.stop_lon, s.sequence_no,
+        r.source_name, r.destination_name
       FROM stops s
       JOIN routes r ON s.route_id = r.route_id
       WHERE s.route_id = ?
@@ -459,36 +600,48 @@ exports.getBusRouteStops = async (req, res) => {
     
     const [stops] = await db.query(stopsQuery, [routeId]);
     
+    if (stops.length === 0) {
+        console.warn(`No stops found for route_id: ${routeId}`);
+        // Return a valid response with an empty timeline
+        return res.json({
+            success: true,
+            data: {
+                bus: { bus_id: bus.bus_id, bus_number: bus.bus_number, status: bus.status },
+                route: { route_id: routeId, total_stops: 0 },
+                timeline: { stops: [], current_stop_index: 0, last_updated: new Date().toISOString() }
+            }
+        });
+    }
+
     console.log('🗺️ Found', stops.length, 'stops for route', routeId);
     
-    // Transform stops for frontend timeline
+    // --- Mock timeline generation (can be replaced with real-time data) ---
     const transformedStops = stops.map((stop, index) => {
-      const isFirst = index === 0;
-      const isLast = index === stops.length - 1;
-      const isCurrent = index === Math.floor(stops.length / 3); // Mock current position
+      // Mock the bus's current position to be about a third of the way through
+      const currentStopMockIndex = Math.floor(stops.length / 3);
       
       let status = 'upcoming';
-      if (index < isCurrent) status = 'completed';
-      if (index === isCurrent) status = 'current';
+      if (index < currentStopMockIndex) status = 'completed';
+      if (index === currentStopMockIndex) status = 'current';
       
-      // Generate realistic times
       const baseTime = new Date();
-      baseTime.setHours(9, 0, 0); // Start at 9 AM
-      baseTime.setMinutes(baseTime.getMinutes() + (index * 15)); // 15 min intervals
+      baseTime.setHours(9, 0, 0); // Start journey at 9 AM for consistent timing
+      baseTime.setMinutes(baseTime.getMinutes() + (index * 15)); // 15 min between stops
       
       return {
         id: stop.stop_id,
         name: stop.stop_name,
         arrivalTime: baseTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         status: status,
-        distance: Math.round(index * 10), // Mock distance calculation
-        eta: status === 'completed' ? 'Passed' : status === 'current' ? 'Now' : `${15 - (index - isCurrent) * 5} min`,
+        distance: Math.round(index * 2.5), // Mock distance
+        eta: status === 'completed' ? 'Passed' : (status === 'current' ? 'Now' : `${(index - currentStopMockIndex) * 15} min`),
         latitude: stop.stop_lat || 0,
         longitude: stop.stop_lon || 0,
         stop_order: stop.sequence_no
       };
     });
 
+    // --- Final JSON Response ---
     const response = {
       success: true,
       data: {
@@ -499,9 +652,9 @@ exports.getBusRouteStops = async (req, res) => {
         },
         route: {
           route_id: routeId,
-          route_name: `${stops[0]?.source_name || 'Unknown'} to ${stops[0]?.destination_name || 'Unknown'}`,
-          source_stop: stops[0]?.source_name || 'Unknown',
-          destination_stop: stops[0]?.destination_name || 'Unknown',
+          route_name: `${stops[0].source_name} to ${stops[0].destination_name}`,
+          source_stop: stops[0].source_name,
+          destination_stop: stops[stops.length - 1].source_name, // Note: This might need schema adjustment
           total_stops: transformedStops.length
         },
         timeline: {
@@ -512,7 +665,7 @@ exports.getBusRouteStops = async (req, res) => {
       }
     };
 
-    console.log('✅ Returning timeline with', transformedStops.length, 'stops');
+    console.log('✅ Returning timeline with', transformedStops.length, 'stops for route', routeId);
     res.json(response);
     
   } catch (error) {
@@ -524,7 +677,6 @@ exports.getBusRouteStops = async (req, res) => {
     });
   }
 };
-
 // Simple test endpoint to check database connectivity
 exports.testBusData = async (req, res) => {
   try {
